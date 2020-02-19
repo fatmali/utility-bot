@@ -1,20 +1,10 @@
-/*
- * Starter Project for Messenger Platform Quick Start Tutorial
- *
- * Remix this as the starting point for following the Messenger Platform
- * quick start tutorial.
- *
- * https://developers.facebook.com/docs/messenger-platform/getting-started/quick-start/
- *
- */
-
 "use strict";
 
 // Imports dependencies and set up http server
 const request = require("request"),
   express = require("express"),
   body_parser = require("body-parser"),
-  quickReply = require("./quickReply"),
+  quickReply = require("./sendApi/quickReply"),
   app = express().use(body_parser.json()); // creates express http server
 
 // Sets server port and logs message on success
@@ -35,17 +25,21 @@ app.post("/webhook", (req, res) => {
     body.entry.forEach(function(entry) {
       // Get the webhook event. entry.messaging is an array, but
       // will only ever contain one event, so we get index 0
-      let {sender, postback} = entry.messaging[0];
-        switch(postback.payload) {
-          case 'REPORT':
-            quickReply(sender.id);
-            break;
-          case 'FOLLOW_UP':
-            quickReply(sender.id);
-            break;
-          default:
-            console.log('dont know');
-        }
+      let { sender, postback } = entry.messaging[0];
+      try{
+      switch (postback.payload) {
+        case "REPORT":
+          quickReply(sender.id);
+          break;
+        case "FOLLOW_UP":
+          quickReply(sender.id);
+          break;
+        default:
+          console.log("Unsupported request: Request can either be REPORT or FOLLOW_UP");
+      }
+    } catch(e)  {
+        console.error(e)
+      }
     });
 
     // Return a '200 OK' response to all events
@@ -58,9 +52,7 @@ app.post("/webhook", (req, res) => {
 
 // Accepts GET requests at the /webhook endpoint
 app.get("/webhook", (req, res) => {
-
-  /** UPDATE YOUR VERIFY TOKEN **/
-  const VERIFY_TOKEN = "test_verification_token";
+EN = "test_verification_token";
 
   // Parse params from the webhook verification request
   let mode = req.query["hub.mode"];
