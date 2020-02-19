@@ -1,44 +1,57 @@
 "use strict";
 
-// Imports dependencies and set up http server
-const request = require("request"),
+const constants = require("./constants"),
+  botSetup = require("./sendApi/setup"),
   express = require("express"),
   body_parser = require("body-parser"),
   quickReply = require("./sendApi/quickReply"),
   app = express().use(body_parser.json()); // creates express http server
 
-// Sets server port and logs message on success
+
 app.listen(process.env.PORT || 1337, () => console.log("webhook is listening"));
 
 app.get("/", (req, res) => {
   res.send("Hello World! I'm Up!");
 });
 
-// Accepts POST requests at /webhook endpoint
-app.post("/webhook", (req, res) => {
-  // Parse the request body from the POST
-  let body = req.body;
+app.get("/run-setup", (req, res) => {
+  botSetup().then(() => res.status(200).send('Bot setup complete'))
+  .catch(err => res.status(500).send(`An error occurred during setup: ${err}`));
+});
 
-  // Check the webhook event is from a Page subscription
+
+app.post("/webhook", ({ body }, res) => {
+  
   if (body.object === "page") {
-    // Iterate over each entry - there may be multiple if batched
+    
     body.entry.forEach(function(entry) {
       // Get the webhook event. entry.messaging is an array, but
       // will only ever contain one event, so we get index 0
       let { sender, postback } = entry.messaging[0];
-      try{
-      switch (postback.payload) {
-        case "REPORT":
-          quickReply(sender.id);
-          break;
-        case "FOLLOW_UP":
-          quickReply(sender.id);
-          break;
-        default:
-          console.log("Unsupported request: Request can either be REPORT or FOLLOW_UP");
-      }
-    } catch(e)  {
-        console.error(e)
+      try {
+        switch (postback.payload) {
+          case constants.GET_STARTED:
+            return quickReply(sender.id, 'Options', []);
+          case constants.REPORT:
+            return quickReply(sender.id, 'Type Of Report', [{
+              "content_type":"text",
+              "title":"Theft",
+              "payload":"THEFT"
+            },{
+              "content_type":"text",
+              "title":"Malfunction",
+              "payload":"Malfunction"
+            }]);
+          case constants.FOLLOW_UP:
+            // search and find ticket id, display progress details of ticket
+            break;
+          default:
+            console.log(
+              "Unsupported request: Request can either be REPORT or FOLLOW_UP"
+            );
+        }
+      } catch (e) {
+        console.error(e);
       }
     });
 
@@ -52,7 +65,7 @@ app.post("/webhook", (req, res) => {
 
 // Accepts GET requests at the /webhook endpoint
 app.get("/webhook", (req, res) => {
-EN = "test_verification_token";
+  const VERIFY_TOKEN = "test_verification_token";
 
   // Parse params from the webhook verification request
   let mode = req.query["hub.mode"];

@@ -1,10 +1,5 @@
 const request = require("../../helpers/request");
-
-
-export const menuPayloads = {
-    REPORT: 'REPORT',
-    FOLLOW_UP: 'FOLLOW_UP'
-}
+const constants = require("../../constants");
 
 const menu = {
     "persistent_menu": [
@@ -15,12 +10,12 @@ const menu = {
                 {
                     "type": "postback",
                     "title": "Report an Incident",
-                    "payload": menuPayloads.REPORT
+                    "payload": constants.REPORT
                 },
                 {
                     "type": "postback",
                     "title": "Follow-up on report",
-                    "payload": menuPayloads.FOLLOW_UP
+                    "payload": constants.FOLLOW_UP
                 }
             ]
         }

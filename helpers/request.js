@@ -1,4 +1,4 @@
-const request = require('../helpers/request');
+const request = require('request');
 
 module.exports = function(req_object) {
     return new Promise(function(resolve, reject) {
