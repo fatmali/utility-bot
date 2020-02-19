@@ -7,7 +7,6 @@ const constants = require("./constants"),
   quickReply = require("./sendApi/quickReply"),
   app = express().use(body_parser.json()); // creates express http server
 
-
 app.listen(process.env.PORT || 1337, () => console.log("webhook is listening"));
 
 app.get("/", (req, res) => {
@@ -15,15 +14,15 @@ app.get("/", (req, res) => {
 });
 
 app.get("/run-setup", (req, res) => {
-  botSetup().then(() => res.status(200).send('Bot setup complete'))
-  .catch(err => res.status(500).send(`An error occurred during setup: ${err}`));
+  botSetup()
+    .then(() => res.status(200).send("Bot setup complete"))
+    .catch(err =>
+      res.status(500).send(`An error occurred during setup: ${err}`)
+    );
 });
 
-
 app.post("/webhook", ({ body }, res) => {
-  
   if (body.object === "page") {
-    
     body.entry.forEach(function(entry) {
       // Get the webhook event. entry.messaging is an array, but
       // will only ever contain one event, so we get index 0
@@ -31,17 +30,20 @@ app.post("/webhook", ({ body }, res) => {
       try {
         switch (postback.payload) {
           case constants.GET_STARTED:
-            return quickReply(sender.id, 'Options', []);
+            return quickReply(sender.id, "Options", []);
           case constants.REPORT:
-            return quickReply(sender.id, 'Type Of Report', [{
-              "content_type":"text",
-              "title":"Theft",
-              "payload":"THEFT"
-            },{
-              "content_type":"text",
-              "title":"Malfunction",
-              "payload":"Malfunction"
-            }]);
+            return quickReply(sender.id, "Type Of Report", [
+              {
+                content_type: "text",
+                title: "Theft",
+                payload: "THEFT"
+              },
+              {
+                content_type: "text",
+                title: "Malfunction",
+                payload: "Malfunction"
+              }
+            ]);
           case constants.FOLLOW_UP:
             // search and find ticket id, display progress details of ticket
             break;
