@@ -21,7 +21,8 @@ app.get('/run-setup', (req, res) => {
     )
 })
 
-app.post('/webhook', ({ body }, res) => {
+app.post('/webhook', (req, res) => {
+  const { body } = req
   if (body.object === 'page') {
     body.entry.forEach(function (entry) {
       // Get the webhook event. entry.messaging is an array, but
