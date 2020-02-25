@@ -26,7 +26,9 @@ app.post('/webhook', (req, res) => {
     req.body.entry.forEach(function (entry) {
       // Get the webhook event. entry.messaging is an array, but
       // will only ever contain one event, so we get index 0
+      console.log('entry', entry)
       const { sender, postback } = entry.messaging[0]
+
       try {
         switch (postback.payload) {
           case constants.GET_STARTED:
