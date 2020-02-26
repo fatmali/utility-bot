@@ -11,4 +11,6 @@ This is a messenger bot built using ExpressJS.
 
 ## API
 
-The entry point of this application is the `app.js` file. The file 
+```.js
+// ...to be continued
+```
