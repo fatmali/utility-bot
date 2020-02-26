@@ -1,19 +1,14 @@
-# Messenger Platform Quick Start
+# Messenger Utility Bot
 
-Welcome to your first step toward building awesome Messenger apps!
+This is a messenger bot built using ExpressJS.
 
-This project contains the code for a simple webhook you can use to get started using the Messenger Platform.
+## Development Instructions
 
-The code here mirrors what is in our [webhook set up guide](https://developers.facebook.com/docs/messenger-platform/getting-started/webhook-setup), and may be used as the starting point for doing the [Messenger Platform quick start tutorial](https://developers.facebook.com/docs/messenger-platform/getting-started/quick-start).
+1. Fork the project. Go to glitch.com, create a new project, under tools, click on import from github and type in the forked repo. We will do most of our development on glitch.com because the Messenger platform requires the bot to be running in the cloud on a https server.
+2. Once step 1 is done, head over to developers.facebook.com, create a new app, facebook page and set up your bot as per these instructions https://developers.facebook.com/docs/messenger-platform/getting-started/app-setup. Note this setup is a one time setup and you won't need to repeat it.
+3. Once you get your Page Access Token, create a .env file and paste in the token as shown in the `.env.example` file. 
+4. After done with the feature you're building, you can use glitch's export to github feature that will push to a github glitch branch that you can use to PR against the master branch on this repo.
 
-## Additional Resources
+## API
 
-Interested in learning more about the Messenger Platform? Check out these resources:
-
-- [**Webhook set up guide**](https://developers.facebook.com/docs/messenger-platform/getting-started/webhook-setup): The walkthrough for the code in this project.
-
-- [**App set up guide**](https://developers.facebook.com/docs/messenger-platform/getting-started/app-setup): Instructions for setting up a Facebook app for use with the Messenger Platform, and hooking it up to this webhook.
-
-- [**Quick start tutorial**](https://developers.facebook.com/docs/messenger-platform/getting-started/quick-start): Build your first Messenger app by remixing this project and following our quick start tutorial.
-
-- [**Docs Docs Docs!**](https://developers.facebook.com/docs/messenger-platform/)
+The entry point of this application is the `app.js` file. The file 
