@@ -5,6 +5,8 @@ const constants = require("./constants"),
   express = require("express"),
   body_parser = require("body-parser"),
   quickReply = require("./sendApi/quickReply"),
+  sendMessage = require("./sendApi/sendMessage"),
+  sendButtons = require("./sendApi/buttons"),
   app = express().use(body_parser.json()); // creates express http server
 
 app.listen(process.env.PORT || 1337, () => console.log("webhook is listening"));
@@ -26,20 +28,36 @@ app.post("/webhook", ({ body }, res) => {
     body.entry.forEach(function(entry) {
       // Get the webhook event. entry.messaging is an array, but
       // will only ever contain one event, so we get index 0
-      let { sender, postback } = entry.messaging[0];
-      try {
+
+      const { sender, postback, message } = entry.messaging[0];
+      if(postback) {
+        try {
         switch (postback.payload) {
           case constants.GET_STARTED:
-            return quickReply(sender.id, "Options", []);
+            sendMessage(sender.id, "Hello there 👋, I'm your 24/7 customer service assistant");
+            sendButtons(sender.id, "What can we assist you with today?", [
+                  {
+                    type: "postback",
+                    payload: constants.REPORT,
+                    title: "Report an incident"
+                  },
+                  {
+                    type: "postback",
+                    payload: constants.FOLLOW_UP,
+                    title: "Follow up on a report"
+                  },
+                  
+                ]);
+            return;
           case constants.REPORT:
-            return quickReply(sender.id, "Type Of Report", [
+            return sendButtons(sender.id, "What type of incident are your reporting?", [
               {
-                content_type: "text",
+                type: "postback",
                 title: "Theft",
                 payload: "THEFT"
               },
               {
-                content_type: "text",
+                type: "postback",
                 title: "Malfunction",
                 payload: "Malfunction"
               }
@@ -54,9 +72,25 @@ app.post("/webhook", ({ body }, res) => {
         }
       } catch (e) {
         console.error(e);
+      }   
+    }
+      else if(message) {
+        if(message.text.toLowerCase().includes(constants.REPORT.toLowerCase())) {
+          return sendButtons(sender.id, "What type of incident are your reporting?", [
+              {
+                type: "postback",
+                title: "Theft",
+                payload: "THEFT"
+              },
+              {
+                type: "postback",
+                title: "Malfunction",
+                payload: "Malfunction"
+              }
+            ]);
+        }
       }
-    });
-
+  });
     // Return a '200 OK' response to all events
     res.status(200).send("EVENT_RECEIVED");
   } else {
