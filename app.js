@@ -6,7 +6,7 @@ const express = require('express')
 const body_parser = require('body-parser')
 const quickReply = require('./sendApi/quickReply')
 const app = express().use(body_parser.json()) // creates express http server
-const sendMessage = require('./sendApi/sendMessage')
+const callSendAPI = require('./sendApi/callSendAPI')
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'))
 
@@ -46,7 +46,7 @@ app.post('/webhook', (req, res) => {
         }
       }
       if (entry.messaging[0].message) {
-        sendMessage(sender.id, mess)
+        callSendAPI(sender.id, mess)
       }
 
       if (postback) {
