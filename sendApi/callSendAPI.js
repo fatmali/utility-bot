@@ -1,3 +1,5 @@
+const request = require('request')
+
 module.exports = async (sender_psid, response) => {
   // Construct the message body
   const request_body = {
