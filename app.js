@@ -49,33 +49,35 @@ app.post('/webhook', (req, res) => {
         sendMessage(sender.id, mess)
       }
 
-      try {
-        switch (postback.payload) {
-          case constants.GET_STARTED:
-            return quickReply(sender.id, 'Options', [])
-          case constants.REPORT:
-            return quickReply(sender.id, 'Type Of Report', [
-              {
-                content_type: 'text',
-                title: 'Theft',
-                payload: 'THEFT'
-              },
-              {
-                content_type: 'text',
-                title: 'Malfunction',
-                payload: 'Malfunction'
-              }
-            ])
-          case constants.FOLLOW_UP:
-            // search and find ticket id, display progress details of ticket
-            break
-          default:
-            console.log(
-              'Unsupported request: Request can either be REPORT or FOLLOW_UP'
-            )
+      if (postback) {
+        try {
+          switch (postback.payload) {
+            case constants.GET_STARTED:
+              return quickReply(sender.id, 'Options', [])
+            case constants.REPORT:
+              return quickReply(sender.id, 'Type Of Report', [
+                {
+                  content_type: 'text',
+                  title: 'Theft',
+                  payload: 'THEFT'
+                },
+                {
+                  content_type: 'text',
+                  title: 'Malfunction',
+                  payload: 'Malfunction'
+                }
+              ])
+            case constants.FOLLOW_UP:
+              // search and find ticket id, display progress details of ticket
+              break
+            default:
+              console.log(
+                'Unsupported request: Request can either be REPORT or FOLLOW_UP'
+              )
+          }
+        } catch (e) {
+          console.error(e)
         }
-      } catch (e) {
-        console.error(e)
       }
     })
 
