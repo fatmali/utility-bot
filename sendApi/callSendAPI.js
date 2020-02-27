@@ -1,4 +1,4 @@
-modules.export = async (sender_psid, response) => {
+module.exports = async (sender_psid, response) => {
   // Construct the message body
   const request_body = {
     recipient: {
