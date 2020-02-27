@@ -6,6 +6,7 @@ const express = require('express')
 const body_parser = require('body-parser')
 const quickReply = require('./sendApi/quickReply')
 const app = express().use(body_parser.json()) // creates express http server
+const sendMessage = require('./sendApi/sendMessage')
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'))
 
@@ -28,6 +29,25 @@ app.post('/webhook', (req, res) => {
       // will only ever contain one event, so we get index 0
       console.log('entry', entry)
       const { sender, postback } = entry.messaging[0]
+      const mess = {
+        attachment: {
+          type: 'template',
+          payload: {
+            template_type: 'button',
+            text: 'What do you want to do next?',
+            buttons: [
+              {
+                type: 'web_url',
+                url: 'https://www.messenger.com',
+                title: 'Visit Messenger'
+              }
+            ]
+          }
+        }
+      }
+      if (entry.messaging[0].message) {
+        sendMessage(sender.id, mess)
+      }
 
       try {
         switch (postback.payload) {
