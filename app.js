@@ -7,6 +7,7 @@ const body_parser = require('body-parser')
 const quickReply = require('./sendApi/quickReply')
 const app = express().use(body_parser.json()) // creates express http server
 const callSendAPI = require('./sendApi/callSendAPI')
+const { welcomeMessage, sharePhoto } = require('./sendApi/messages')
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening', process.env.PORT))
 
@@ -28,46 +29,16 @@ app.post('/webhook', (req, res) => {
       // Get the webhook event. entry.messaging is an array, but
       // will only ever contain one event, so we get index 0
       const { sender, postback } = entry.messaging[0]
-      console.log('postback', postback)
-      const mess = {
-        attachment: {
-          type: 'template',
-          payload: {
-            template_type: 'button',
-            text: 'What do you want to do next?',
-            buttons: [
-              {
-                type: 'web_url',
-                url: 'https://www.messenger.com',
-                title: 'Visit Messenger'
-              }
-            ]
-          }
-        }
-      }
-      if (entry.messaging[0].message) {
-        callSendAPI(sender.id, mess)
-      }
 
       if (postback) {
         try {
           switch (postback.payload) {
             case constants.GET_STARTED:
-              callSendAPI(sender.id, mess)
+              callSendAPI(sender.id, welcomeMessage)
               break
             case constants.REPORT:
-              return quickReply(sender.id, 'Type Of Report', [
-                {
-                  content_type: 'text',
-                  title: 'Theft',
-                  payload: 'THEFT'
-                },
-                {
-                  content_type: 'text',
-                  title: 'Malfunction',
-                  payload: 'Malfunction'
-                }
-              ])
+              callSendAPI(sender.id, sharePhoto)
+              break
             case constants.FOLLOW_UP:
               // search and find ticket id, display progress details of ticket
               break
