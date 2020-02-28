@@ -53,7 +53,8 @@ app.post('/webhook', (req, res) => {
         try {
           switch (postback.payload) {
             case constants.GET_STARTED:
-              return quickReply(sender.id, 'Options', [])
+              callSendAPI(sender.id, mess)
+              break
             case constants.REPORT:
               return quickReply(sender.id, 'Type Of Report', [
                 {
