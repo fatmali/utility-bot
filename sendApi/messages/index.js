@@ -21,9 +21,7 @@ const welcomeMessage = {
 }
 
 const sharePhoto = {
-  message: {
-    text: 'hello, world!'
-  }
+  text: 'hello, world!'
 }
 
 module.exports = {

@@ -37,6 +37,7 @@ app.post('/webhook', (req, res) => {
               callSendAPI(sender.id, welcomeMessage)
               break
             case constants.REPORT:
+              console.log('report case reached')
               callSendAPI(sender.id, sharePhoto)
               break
             case constants.FOLLOW_UP:
