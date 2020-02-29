@@ -4,7 +4,7 @@ const express = require('express')
 const body_parser = require('body-parser')
 const app = express().use(body_parser.json()) // creates express http server
 
-app.listen(3000, () => console.log('webhook is listening on port 3000'))
+app.listen(process.env.PORT || 1337, () => console.log('webhook is listening on port', process.env.PORT))
 
 app.get('/', (req, res) => {
   res.send("Hello World! I'm Up!")
