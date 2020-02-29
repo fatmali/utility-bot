@@ -28,8 +28,8 @@ app.post('/webhook', (req, res) => {
     req.body.entry.forEach(function (entry) {
       // Get the webhook event. entry.messaging is an array, but
       // will only ever contain one event, so we get index 0
-      const { sender, postback } = entry.messaging[0]
-
+      const { sender, postback, message } = entry.messaging[0]
+      console.log('postback', postback, 'message', message)
       if (postback) {
         try {
           switch (postback.payload) {
@@ -37,16 +37,13 @@ app.post('/webhook', (req, res) => {
               callSendAPI(sender.id, welcomeMessage)
               break
             case constants.REPORT:
-              console.log('report case reached')
               callSendAPI(sender.id, sharePhoto)
               break
             case constants.FOLLOW_UP:
               // search and find ticket id, display progress details of ticket
               break
             default:
-              console.log(
-                'Unsupported request: Request can either be REPORT or FOLLOW_UP'
-              )
+              console.log('Unsupported request: Request can either be REPORT or FOLLOW_UP')
           }
         } catch (e) {
           console.error(e)
