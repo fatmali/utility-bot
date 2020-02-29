@@ -24,7 +24,12 @@ const sharePhoto = {
   text: 'That\'s great. Please share a photo of the incident.'
 }
 
+const photoReceived = {
+  text: 'Thank you and could you share the location of this incident?'
+}
+
 module.exports = {
   welcomeMessage,
-  sharePhoto
+  sharePhoto,
+  photoReceived
 }

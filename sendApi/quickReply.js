@@ -1,5 +1,4 @@
 const request = require('../helpers/request')
-const senderAction = require('./sendAction')
 
 module.exports = function sendMessage (recipientId, text, quick_replies) {
   return request({

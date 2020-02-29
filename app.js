@@ -1,15 +1,10 @@
 'use strict'
-
-const constants = require('./constants')
 const botSetup = require('./sendApi/setup')
 const express = require('express')
 const body_parser = require('body-parser')
-const quickReply = require('./sendApi/quickReply')
 const app = express().use(body_parser.json()) // creates express http server
-const callSendAPI = require('./sendApi/callSendAPI')
-const { welcomeMessage, sharePhoto } = require('./sendApi/messages')
 
-app.listen(process.env.PORT || 1337, () => console.log('webhook is listening', process.env.PORT))
+app.listen(3000, () => console.log('webhook is listening on port 3000'))
 
 app.get('/', (req, res) => {
   res.send("Hello World! I'm Up!")
@@ -29,25 +24,12 @@ app.post('/webhook', (req, res) => {
       // Get the webhook event. entry.messaging is an array, but
       // will only ever contain one event, so we get index 0
       const { sender, postback, message } = entry.messaging[0]
-      console.log('postback', postback, 'message', message)
       if (postback) {
-        try {
-          switch (postback.payload) {
-            case constants.GET_STARTED:
-              callSendAPI(sender.id, welcomeMessage)
-              break
-            case constants.REPORT:
-              callSendAPI(sender.id, sharePhoto)
-              break
-            case constants.FOLLOW_UP:
-              // search and find ticket id, display progress details of ticket
-              break
-            default:
-              console.log('Unsupported request: Request can either be REPORT or FOLLOW_UP')
-          }
-        } catch (e) {
-          console.error(e)
-        }
+        handlePostback(sender, postback)
+      } else if (message) {
+        handleMessage(sender, message)
+      } else {
+        res.sendStatus(404)
       }
     })
 
