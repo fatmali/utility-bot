@@ -1,11 +1,9 @@
 'use strict'
-
-const constants = require('./constants')
 const botSetup = require('./sendApi/setup')
 const express = require('express')
 const body_parser = require('body-parser')
-const quickReply = require('./sendApi/quickReply')
 const app = express().use(body_parser.json()) // creates express http server
+const { handlePostback, handleMessage } = require('./helpers')
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'))
 
@@ -26,36 +24,13 @@ app.post('/webhook', (req, res) => {
     req.body.entry.forEach(function (entry) {
       // Get the webhook event. entry.messaging is an array, but
       // will only ever contain one event, so we get index 0
-      console.log('entry', entry)
-      const { sender, postback } = entry.messaging[0]
-
-      try {
-        switch (postback.payload) {
-          case constants.GET_STARTED:
-            return quickReply(sender.id, 'Options', [])
-          case constants.REPORT:
-            return quickReply(sender.id, 'Type Of Report', [
-              {
-                content_type: 'text',
-                title: 'Theft',
-                payload: 'THEFT'
-              },
-              {
-                content_type: 'text',
-                title: 'Malfunction',
-                payload: 'Malfunction'
-              }
-            ])
-          case constants.FOLLOW_UP:
-            // search and find ticket id, display progress details of ticket
-            break
-          default:
-            console.log(
-              'Unsupported request: Request can either be REPORT or FOLLOW_UP'
-            )
-        }
-      } catch (e) {
-        console.error(e)
+      const { sender, postback, message } = entry.messaging[0]
+      if (postback) {
+        handlePostback(sender, postback)
+      } else if (message) {
+        handleMessage(sender, message)
+      } else {
+        res.sendStatus(404)
       }
     })
 
