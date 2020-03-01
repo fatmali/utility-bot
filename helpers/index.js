@@ -1,7 +1,7 @@
 
 const request = require('./request')
 const constants = require('../constants')
-const { welcomeMessage, sharePhoto, addDetailsQuickReply, reportCompletedResponse } = require('../sendApi/messages')
+const { welcomeMessage, sharePhoto, addDetailsQuickReply, requestToAddDetails, reportCompletedResponse } = require('../sendApi/messages')
 
 async function callSendAPI (sender_psid, response) {
   // Construct the message body
