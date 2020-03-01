@@ -7,6 +7,7 @@ const { handlePostback, handleMessage } = require('./helpers')
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'))
 
+
 app.get('/', (req, res) => {
   res.send("Hello World! I'm Up!")
 })
@@ -22,8 +23,6 @@ app.get('/run-setup', (req, res) => {
 app.post('/webhook', (req, res) => {
   if (req.body.object === 'page') {
     req.body.entry.forEach(function (entry) {
-      // Get the webhook event. entry.messaging is an array, but
-      // will only ever contain one event, so we get index 0
       const { sender, postback, message } = entry.messaging[0]
       if (postback) {
         handlePostback(sender, postback)
