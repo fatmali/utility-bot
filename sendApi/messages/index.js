@@ -51,11 +51,16 @@ const reportCompletedResponse = {
   text: 'Thank you very much! Our support team will attend to this report and will give you feedback once it has been resolved.s'
 }
 
+const misunderstoodReply = {
+  text: 'Sorry, I did not get that. Please check our main menu and try again.'
+}
+
 module.exports = {
   welcomeMessage,
   sharePhoto,
   photoReceived,
   addDetailsQuickReply,
   requestToAddDetails,
-  reportCompletedResponse
+  reportCompletedResponse,
+  misunderstoodReply
 }
