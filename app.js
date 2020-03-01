@@ -1,123 +1,65 @@
-"use strict";
+'use strict'
+const botSetup = require('./sendApi/setup')
+const express = require('express')
+const body_parser = require('body-parser')
+const app = express().use(body_parser.json()) // creates express http server
+const { handlePostback, handleMessage } = require('./helpers')
 
-const constants = require("./constants"),
-  botSetup = require("./sendApi/setup"),
-  express = require("express"),
-  body_parser = require("body-parser"),
-  quickReply = require("./sendApi/quickReply"),
-  sendMessage = require("./sendApi/sendMessage"),
-  sendButtons = require("./sendApi/buttons"),
-  app = express().use(body_parser.json()); // creates express http server
+app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'))
 
-app.listen(process.env.PORT || 1337, () => console.log("webhook is listening"));
 
-app.get("/", (req, res) => {
-  res.send("Hello World! I'm Up!");
-});
+app.get('/', (req, res) => {
+  res.send("Hello World! I'm Up!")
+})
 
-app.get("/run-setup", (req, res) => {
+app.get('/run-setup', (req, res) => {
   botSetup()
-    .then(() => res.status(200).send("Bot setup complete"))
+    .then(() => res.status(200).send('Bot setup complete'))
     .catch(err =>
       res.status(500).send(`An error occurred during setup: ${err}`)
-    );
-});
+    )
+})
 
-app.post("/webhook", ({ body }, res) => {
-  if (body.object === "page") {
-    body.entry.forEach(function(entry) {
-      // Get the webhook event. entry.messaging is an array, but
-      // will only ever contain one event, so we get index 0
-
-      const { sender, postback, message } = entry.messaging[0];
-      if(postback) {
-        try {
-        switch (postback.payload) {
-          case constants.GET_STARTED:
-            sendMessage(sender.id, "Hello there 👋, I'm your 24/7 customer service assistant");
-            sendButtons(sender.id, "What can we assist you with today?", [
-                  {
-                    type: "postback",
-                    payload: constants.REPORT,
-                    title: "Report an incident"
-                  },
-                  {
-                    type: "postback",
-                    payload: constants.FOLLOW_UP,
-                    title: "Follow up on a report"
-                  },
-                  
-                ]);
-            return;
-          case constants.REPORT:
-            return sendButtons(sender.id, "What type of incident are your reporting?", [
-              {
-                type: "postback",
-                title: "Theft",
-                payload: "THEFT"
-              },
-              {
-                type: "postback",
-                title: "Malfunction",
-                payload: "Malfunction"
-              }
-            ]);
-          case constants.FOLLOW_UP:
-            // search and find ticket id, display progress details of ticket
-            break;
-          default:
-            console.log(
-              "Unsupported request: Request can either be REPORT or FOLLOW_UP"
-            );
-        }
-      } catch (e) {
-        console.error(e);
-      }   
-    }
-      else if(message) {
-        if(message.text.toLowerCase().includes(constants.REPORT.toLowerCase())) {
-          return sendButtons(sender.id, "What type of incident are your reporting?", [
-              {
-                type: "postback",
-                title: "Theft",
-                payload: "THEFT"
-              },
-              {
-                type: "postback",
-                title: "Malfunction",
-                payload: "Malfunction"
-              }
-            ]);
-        }
+app.post('/webhook', (req, res) => {
+  if (req.body.object === 'page') {
+    req.body.entry.forEach(function (entry) {
+      const { sender, postback, message } = entry.messaging[0]
+      if (postback) {
+        handlePostback(sender, postback)
+      } else if (message) {
+        handleMessage(sender, message)
+      } else {
+        res.sendStatus(404)
       }
-  });
+    })
+
     // Return a '200 OK' response to all events
-    res.status(200).send("EVENT_RECEIVED");
+    res.status(200).send('EVENT_RECEIVED')
   } else {
     // Return a '404 Not Found' if event is not from a page subscription
-    res.sendStatus(404);
+    res.sendStatus(404)
   }
-});
+})
 
 // Accepts GET requests at the /webhook endpoint
-app.get("/webhook", (req, res) => {
-  const VERIFY_TOKEN = "test_verification_token";
+app.get('/webhook', (req, res) => {
+  const VERIFY_TOKEN = 'test_verification_token'
 
   // Parse params from the webhook verification request
-  let mode = req.query["hub.mode"];
-  let token = req.query["hub.verify_token"];
-  let challenge = req.query["hub.challenge"];
+  const mode = req.query['hub.mode']
+  const token = req.query['hub.verify_token']
+  const challenge = req.query['hub.challenge']
 
   // Check if a token and mode were sent
   if (mode && token) {
     // Check the mode and token sent are correct
-    if (mode === "subscribe" && token === VERIFY_TOKEN) {
+    if (mode === 'subscribe' && token === VERIFY_TOKEN) {
       // Respond with 200 OK and challenge token from the request
-      console.log("WEBHOOK_VERIFIED");
-      res.status(200).send(challenge);
+      console.log('WEBHOOK_VERIFIED')
+      res.status(200).send(challenge)
     } else {
       // Responds with '403 Forbidden' if verify tokens do not match
-      res.sendStatus(403);
+      res.sendStatus(403)
     }
   }
-});
+})
