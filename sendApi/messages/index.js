@@ -28,8 +28,34 @@ const photoReceived = {
   text: 'Thank you and could you share the location of this incident?'
 }
 
+const addDetailsQuickReply = {
+  text: 'Would you like to add more details to this report?',
+  quick_replies: [
+    {
+      content_type: 'text',
+      title: 'Yes',
+      payload: 'ADD_DETAILS_YES'
+    }, {
+      content_type: 'text',
+      title: 'No',
+      payload: 'ADD_DETAILS_NO'
+    }
+  ]
+}
+
+const requestToAddDetails = {
+  text: 'Okay. Please type a message to tell me more.'
+}
+
+const reportCompletedResponse = {
+  text: 'Thank you very much! Our support team will attend to this report and will give you feedback once it has been resolved.s'
+}
+
 module.exports = {
   welcomeMessage,
   sharePhoto,
-  photoReceived
+  photoReceived,
+  addDetailsQuickReply,
+  requestToAddDetails,
+  reportCompletedResponse
 }
