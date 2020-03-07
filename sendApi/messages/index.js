@@ -52,9 +52,9 @@ const requestToShareLocation = {
       buttons: [
         {
           type: 'web_url',
-          url: 'https://maps.google.com/',
+          url: 'https://26a20bde.ngrok.io',
           title: 'URL Button',
-          webview_height_ratio: 'full'
+          webview_height_ratio: 'tall'
         }
       ]
     }
