@@ -25,6 +25,7 @@ app.post('/webhook', (req, res) => {
       // Get the webhook event. entry.messaging is an array, but
       // will only ever contain one event, so we get index 0
       const { sender, postback, message } = entry.messaging[0]
+      console.log('message', message)
       if (postback) {
         handlePostback(sender, postback)
       } else if (message) {
