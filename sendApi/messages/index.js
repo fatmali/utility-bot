@@ -43,6 +43,18 @@ const addDetailsQuickReply = {
   ]
 }
 
+const requestToShareLocation = {
+  text: 'Could you share the location of this leakage to help our team find it?',
+  quick_replies: [
+    {
+      content_type: 'text',
+      title: 'Share',
+      payload: 'SHARE_LOCATION',
+      url: 'https://google.com'
+    }
+  ]
+}
+
 const requestToAddDetails = {
   text: 'Okay. Please type a message to tell me more.'
 }
@@ -62,5 +74,6 @@ module.exports = {
   addDetailsQuickReply,
   requestToAddDetails,
   reportCompletedResponse,
-  misunderstoodReply
+  misunderstoodReply,
+  requestToShareLocation
 }

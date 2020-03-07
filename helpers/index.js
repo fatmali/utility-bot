@@ -1,7 +1,7 @@
 
 const request = require('./request')
 const constants = require('../constants')
-const { welcomeMessage, sharePhoto, addDetailsQuickReply, requestToAddDetails, misunderstoodReply, reportCompletedResponse } = require('../sendApi/messages')
+const { welcomeMessage, requestToShareLocation, addDetailsQuickReply, requestToAddDetails, misunderstoodReply, reportCompletedResponse } = require('../sendApi/messages')
 
 async function callSendAPI (sender_psid, response) {
   // Construct the message body
@@ -33,7 +33,7 @@ function handlePostback (sender, postback) {
         callSendAPI(sender.id, welcomeMessage)
         break
       case constants.REPORT:
-        callSendAPI(sender.id, sharePhoto)
+        callSendAPI(sender.id, requestToShareLocation)
         break
       case constants.ADD_DETAILS.YES:
         callSendAPI(sender.id, requestToAddDetails)
@@ -53,7 +53,6 @@ function handlePostback (sender, postback) {
 }
 
 function handleMessage (sender, message) {
-  console.log('message', message)
   try {
     if (message.text === constants.GET_STARTED) {
       callSendAPI(sender.id, welcomeMessage)
