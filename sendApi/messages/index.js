@@ -48,7 +48,7 @@ const requestToAddDetails = {
 }
 
 const reportCompletedResponse = {
-  text: 'Thank you very much! Our support team will attend to this report and will give you feedback once it has been resolved.s'
+  text: 'Thank you very much! Our support team will attend to this report and will give you feedback once it has been resolved.'
 }
 
 const misunderstoodReply = {
