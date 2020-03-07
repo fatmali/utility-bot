@@ -44,15 +44,21 @@ const addDetailsQuickReply = {
 }
 
 const requestToShareLocation = {
-  text: 'Could you share the location of this leakage to help our team find it?',
-  quick_replies: [
-    {
-      content_type: 'text',
-      title: 'Share',
-      payload: 'SHARE_LOCATION',
-      url: 'https://google.com'
+  attachment: {
+    type: 'template',
+    payload: {
+      template_type: 'button',
+      text: 'Try the URL button!',
+      buttons: [
+        {
+          type: 'web_url',
+          url: 'https://maps.google.com/',
+          title: 'URL Button',
+          webview_height_ratio: 'full'
+        }
+      ]
     }
-  ]
+  }
 }
 
 const requestToAddDetails = {
