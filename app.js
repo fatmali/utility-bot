@@ -4,6 +4,7 @@ const express = require('express')
 const body_parser = require('body-parser')
 const app = express().use(body_parser.json()) // creates express http server
 const { handlePostback, handleMessage } = require('./helpers')
+const { pool } = require('./helpers/queries')
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'))
 
@@ -64,4 +65,16 @@ app.get('/webhook', (req, res) => {
       res.sendStatus(403)
     }
   }
+})
+
+// TODO: make a separate route to get the user's location
+app.post('/location', async function (req, res) {
+  let result
+  const { location } = req.body
+  try {
+    result = await pool.query('INSERT INTO reports (location) VALUES ($1);', [location])
+  } catch (error) {
+    console.log(error)
+  }
+  res.json({ result })
 })
