@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios'
 
 const mapStyles = {
   main: {
@@ -123,25 +124,28 @@ export class CurrentLocation extends React.Component {
   }
 
   handleClick = async () => {
+    console.log('button clicked')
     const { lat, lng } = this.state.currentLocation
-try{
-  await fetch('https://utility-bot-test.herokuapp.com/webhook', {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'include', // include, *same-origin, omit
-    headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    redirect: 'follow', // manual, *follow, error
-    referrerPolicy: 'no-referrer', // no-referrer, *client
-    body: JSON.stringify({ lat, lng }) // body data type must match "Content-Type" header
-  });
-} catch (error){
-// TODO: show the user an error message and close the window
-console.log(error)
-}
+
+    try{
+    // TODO: get the string location of the lat and lng and save to the database
+    await fetch('http://localhost:5000/location', {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        // mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        // credentials: 'include', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          // redirect: 'follow', // manual, *follow, error
+          // referrerPolicy: 'no-referrer', // no-referrer, *client
+          body: JSON.stringify({ location: 'test location' }) // body data type must match "Content-Type" header
+        });
+      } catch (error){
+        // TODO: show the user an error message and close the window
+        console.log(error)
+      }
 // window.location.replace('https://www.messenger.com/closeWindow/?image_url=https://i.picsum.photos/id/1068/200/300.jpg&display_text="location shared"')
   }
 

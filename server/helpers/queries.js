@@ -1,8 +1,6 @@
 const Pool = require('pg').Pool
 require('dotenv').config()
 
-console.log('env', process.env.POSTGRES_USER)
-
 const pool = new Pool({
   user: process.env.POSTGRES_USER,
   host: process.env.POSTGRES_HOST,

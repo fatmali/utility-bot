@@ -6,7 +6,16 @@ const app = express().use(body_parser.json()) // creates express http server
 const { handlePostback, handleMessage } = require('./helpers')
 const { pool } = require('./helpers/queries')
 
-app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'))
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE')
+  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Access-Control-Allow-Origin, Origin, X-Requested-With, X-AUTHENTICATION, X-IP, Content-Type, Accept, Authorization')
+  res.setHeader('Access-Control-Allow-Credentials', 'false')
+  res.setHeader('Cache-Control', 'no-cache')
+  next()
+})
+
+app.listen(process.env.PORT || 5000, () => console.log('webhook is listening'))
 
 app.get('/', (req, res) => {
   res.send("Hello World! I'm Up!")
