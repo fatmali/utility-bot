@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios'
 
 const mapStyles = {
   main: {
@@ -59,11 +58,21 @@ export class CurrentLocation extends React.Component {
     this.loadMap();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps, prevState) {
     if (prevProps.google !== this.props.google) {
       this.loadMap();
     }
     if (prevState.currentLocation !== this.state.currentLocation) {
+      let result
+      const { lat, lng } = this.state.currentLocation
+      try{
+       fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.REACT_APP_GEOCODE_API_KEY}`)
+       .then((result) => result.json())
+       .then(data => console.log(data))   
+      } catch (error){
+            console.log(error)
+          }
+  
       this.recenterMap();
     }
   }
