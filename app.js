@@ -1,6 +1,7 @@
 'use strict'
 const botSetup = require('./sendApi/setup')
 const express = require('express')
+const path = require('path')
 const body_parser = require('body-parser')
 const app = express().use(body_parser.json()) // creates express http server
 const { handlePostback, handleMessage } = require('./helpers')
