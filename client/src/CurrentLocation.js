@@ -133,7 +133,6 @@ export class CurrentLocation extends React.Component {
   }
 
   handleClick = async () => {
-    console.log('button clicked')
     const { lat, lng } = this.state.currentLocation
 
     try{
