@@ -2,7 +2,7 @@
 const request = require('./request')
 const constants = require('../constants')
 const { welcomeMessage, requestToShareLocation, sharePhoto, photoReceived, addDetailsQuickReply, requestToAddDetails, misunderstoodReply, reportCompletedResponse } = require('../sendApi/messages')
-const { pgClient } = require('./helpers/queries')
+const { pgClient } = require('./queries')
 
 async function callSendAPI (sender_psid, response) {
   // Construct the message body
