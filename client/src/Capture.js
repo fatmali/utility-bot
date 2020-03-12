@@ -26,13 +26,13 @@ const Capture = () => {
   const send = async () => {
     //send photo to db
     try{
-      await fetch('http://localhost:5000', {
+      await fetch('http://localhost:5000/capture', {
           method: 'POST', 
           cache: 'no-cache', 
           headers: {
               'Content-Type': 'application/json'   
             },
-            body: JSON.stringify({ location: 'test location' }) // body data type must match "Content-Type" header
+            body: JSON.stringify({ location: 'test picture' }) // body data type must match "Content-Type" header
           });
         } catch (error){
           console.log(error)

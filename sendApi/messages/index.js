@@ -52,7 +52,7 @@ const requestToShareLocation = {
       buttons: [
         {
           type: 'web_url',
-          url: 'https://26a20bde.ngrok.io',
+          url: 'https://utility-bot-test.herokuapp.com/location',
           title: 'URL Button',
           webview_height_ratio: 'tall'
         }
@@ -70,7 +70,7 @@ const requestToSharePhoto = {
       buttons: [
         {
           type: 'web_url',
-          url: 'https://utility-bot-test.herokuapp.com/capture',
+          url: 'https://utility-bot-test.herokuapp.com',
           title: 'share photo',
           webview_height_ratio: 'tall'
         }

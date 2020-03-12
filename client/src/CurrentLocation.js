@@ -37,7 +37,8 @@ export class CurrentLocation extends React.Component {
       currentLocation: {
         lat: lat,
         lng: lng
-      }
+      },
+      physicalAddress: ''
     };
   }
 
@@ -63,16 +64,6 @@ export class CurrentLocation extends React.Component {
       this.loadMap();
     }
     if (prevState.currentLocation !== this.state.currentLocation) {
-      let result
-      const { lat, lng } = this.state.currentLocation
-      try{
-       fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.REACT_APP_GEOCODE_API_KEY}`)
-       .then((result) => result.json())
-       .then(data => console.log(data))   
-      } catch (error){
-            console.log(error)
-          }
-  
       this.recenterMap();
     }
   }
@@ -133,25 +124,29 @@ export class CurrentLocation extends React.Component {
   }
 
   handleClick = async () => {
+    let physicalAddress
     const { lat, lng } = this.state.currentLocation
-
     try{
-    // TODO: get the string location of the lat and lng and save to the database
+    await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.REACT_APP_GEOCODE_API_KEY}`)
+     .then((result) => result.json())
+     .then(data => {
+      physicalAddress = data.plus_code.compound_code
+     })   
+
+    } catch (error){
+          console.log(error)
+        }
+    
+        try{
     await fetch('/location', {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        // mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        // credentials: 'include', // include, *same-origin, omit
+        method: 'POST', 
+        cache: 'no-cache', 
         headers: {
             'Content-Type': 'application/json'
-            // 'Content-Type': 'application/x-www-form-urlencoded',
           },
-          // redirect: 'follow', // manual, *follow, error
-          // referrerPolicy: 'no-referrer', // no-referrer, *client
-          body: JSON.stringify({ location: 'test location' }) // body data type must match "Content-Type" header
+          body: JSON.stringify({ location: physicalAddress }) 
         });
       } catch (error){
-        // TODO: show the user an error message and close the window
         console.log(error)
       }
 // window.location.replace('https://www.messenger.com/closeWindow/?image_url=https://i.picsum.photos/id/1068/200/300.jpg&display_text="location shared"')
