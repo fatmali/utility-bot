@@ -149,7 +149,7 @@ export class CurrentLocation extends React.Component {
       } catch (error){
         console.log(error)
       }
-// window.location.replace('https://www.messenger.com/closeWindow/?image_url=https://i.picsum.photos/id/1068/200/300.jpg&display_text="location shared"')
+    window.location.replace('https://www.messenger.com/closeWindow/?image_url=https://i.picsum.photos/id/1068/200/300.jpg&display_text="location shared"')
   }
 
   render() {
