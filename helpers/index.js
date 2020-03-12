@@ -1,7 +1,7 @@
 
 const request = require('./request')
 const constants = require('../constants')
-const { welcomeMessage, requestToShareLocation, sharePhoto, addDetailsQuickReply, requestToAddDetails, misunderstoodReply, reportCompletedResponse } = require('../sendApi/messages')
+const { welcomeMessage, requestToShareLocation, sharePhoto, photoReceived, addDetailsQuickReply, requestToAddDetails, misunderstoodReply, reportCompletedResponse } = require('../sendApi/messages')
 
 async function callSendAPI (sender_psid, response) {
   // Construct the message body
@@ -57,6 +57,7 @@ function handleMessage (sender, message) {
     if (message.text === constants.GET_STARTED) {
       callSendAPI(sender.id, welcomeMessage)
     } else if (message.attachments && message.attachments[0].type === 'image') {
+      callSendAPI(sender.id, photoReceived)
       callSendAPI(sender.id, requestToShareLocation)
     } else if (message.quick_reply) {
       switch (message.quick_reply.payload) {

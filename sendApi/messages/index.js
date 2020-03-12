@@ -25,7 +25,7 @@ const sharePhoto = {
 }
 
 const photoReceived = {
-  text: 'Thank you and could you share the location of this incident?'
+  text: 'Thank you. got it!'
 }
 
 const addDetailsQuickReply = {
@@ -48,12 +48,12 @@ const requestToShareLocation = {
     type: 'template',
     payload: {
       template_type: 'button',
-      text: 'Try the URL button!',
+      text: 'Please share the location of this incident to help our support team locate and resolve it.',
       buttons: [
         {
           type: 'web_url',
           url: 'https://utility-bot-test.herokuapp.com/location',
-          title: 'URL Button',
+          title: 'Share',
           webview_height_ratio: 'tall'
         }
       ]
