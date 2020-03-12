@@ -2,6 +2,7 @@
 const request = require('./request')
 const constants = require('../constants')
 const { welcomeMessage, requestToShareLocation, sharePhoto, photoReceived, addDetailsQuickReply, requestToAddDetails, misunderstoodReply, reportCompletedResponse } = require('../sendApi/messages')
+const { pgClient } = require('./helpers/queries')
 
 async function callSendAPI (sender_psid, response) {
   // Construct the message body
@@ -52,11 +53,21 @@ function handlePostback (sender, postback) {
   }
 }
 
-function handleMessage (sender, message) {
+async function saveImage (imageUrl) {
+  try {
+    await pgClient.query('INSERT INTO reports (photos) VALUES ($1);', [imageUrl])
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function handleMessage (sender, message) {
   try {
     if (message.text === constants.GET_STARTED) {
       callSendAPI(sender.id, welcomeMessage)
-    } else if (message.attachments && message.attachments[0].type === 'image') {
+    } else if (message.attachments && message.attachments[0].type === 'image' &&
+    message.attachments[0].payload.url) {
+      await saveImage(message.attachments[0].payload.url)
       callSendAPI(sender.id, photoReceived)
       callSendAPI(sender.id, requestToShareLocation)
     } else if (message.quick_reply) {
