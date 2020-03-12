@@ -5,7 +5,9 @@ const path = require('path')
 const body_parser = require('body-parser')
 const app = express().use(body_parser.json()) // creates express http server
 const { handlePostback, handleMessage } = require('./helpers')
-const { pool } = require('./helpers/queries')
+const { pgClient } = require('./helpers/queries')
+
+pgClient.connect()
 
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -88,7 +90,7 @@ app.post('/location', async function (req, res) {
   let result
   const { location } = req.body
   try {
-    result = await pool.query('INSERT INTO reports (location) VALUES ($1);', [location])
+    result = await pgClient.query('INSERT INTO reports (location) VALUES ($1);', [location])
   } catch (error) {
     console.log(error)
   }
@@ -100,7 +102,7 @@ app.post('/capture', async function (req, res) {
   let result
   const { photo } = req.body
   try {
-    result = await pool.query('INSERT INTO reports (photos) VALUES ($1);', [photo])
+    result = await pgClient.query('INSERT INTO reports (photos) VALUES ($1);', [photo])
   } catch (error) {
     console.log(error)
   }
