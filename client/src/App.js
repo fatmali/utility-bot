@@ -1,50 +1,18 @@
 import React, { Component } from 'react';
-import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
-import CurrentLocation from './CurrentLocation'
-
-export class MapContainer extends Component {
+import {  BrowserRouter as Router, Route } from 'react-router-dom'
+import MapContainer from './MapContainer'
+import Home from './Home'
+export class App extends Component {
   
-  state = {
-    showingInfoWindow: false,  //Hides or the shows the infoWindow
-    activeMarker: {},          //Shows the active marker upon click
-    selectedPlace: {}          //Shows the infoWindow to the selected place upon a marker
-  };
-
-onMarkerClick = (props, marker, e) => {
-  this.setState({
-    selectedPlace: props,
-    activeMarker: marker,
-    showingInfoWindow: true
-  });
-} 
-onClose = props => {
-  if (this.state.showingInfoWindow) {
-    this.setState({
-      showingInfoWindow: false,
-      activeMarker: null
-    });
-  }
-};
-
   render() {
-    return (
-      <CurrentLocation
-      centerAroundCurrentLocation
-      google={this.props.google}>
-      <Marker onClick={this.onMarkerClick} name={'current location'} />
-      <InfoWindow
-        marker={this.state.activeMarker}
-        visible={this.state.showingInfoWindow}
-        onClose={this.onClose}>
-        <div>
-          <h4>{this.state.selectedPlace.name}</h4>
-        </div>
-      </InfoWindow>
-    </CurrentLocation>
-    );
+    return(
+      <Router>
+      <Route exact path="/" component={Home}  />
+      <Route exact path="/location" component={MapContainer} />
+      <Route path="/capture" component={MapContainer} />
+    </Router>
+    )
   }
-}
+  }
 
-export default GoogleApiWrapper({
-  apiKey: process.env.REACT_APP_API_KEY
-})(MapContainer);
+export default App
