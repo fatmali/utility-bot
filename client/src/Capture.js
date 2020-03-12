@@ -26,7 +26,7 @@ const Capture = () => {
   const send = async () => {
     //send photo to db
     try{
-      await fetch('http://localhost:5000/capture', {
+      await fetch('http://localhost:5000', {
           method: 'POST', 
           cache: 'no-cache', 
           headers: {
