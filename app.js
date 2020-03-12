@@ -75,13 +75,25 @@ app.get('/webhook', (req, res) => {
     }
   }
 })
-
-// TODO: make a separate route to get the user's location
+// TODO: add user's id to as a req.body and change this to patch route so that only one user's
+// information is updated
 app.post('/location', async function (req, res) {
   let result
   const { location } = req.body
   try {
     result = await pool.query('INSERT INTO reports (location) VALUES ($1);', [location])
+  } catch (error) {
+    console.log(error)
+  }
+  res.json({ result })
+})
+// TODO: add user's id to as a req.body and change this to patch route so that only one user's
+// information is updated
+app.post('/capture', async function (req, res) {
+  let result
+  const { photo } = req.body
+  try {
+    result = await pool.query('INSERT INTO reports (photos) VALUES ($1);', [photo])
   } catch (error) {
     console.log(error)
   }

@@ -61,6 +61,24 @@ const requestToShareLocation = {
   }
 }
 
+const requestToSharePhoto = {
+  attachment: {
+    type: 'template',
+    payload: {
+      template_type: 'button',
+      text: 'Please take a photo of the leakage',
+      buttons: [
+        {
+          type: 'web_url',
+          url: 'https://utility-bot-test.herokuapp.com/capture',
+          title: 'URL Button',
+          webview_height_ratio: 'tall'
+        }
+      ]
+    }
+  }
+}
+
 const requestToAddDetails = {
   text: 'Okay. Please type a message to tell me more.'
 }
@@ -81,5 +99,6 @@ module.exports = {
   requestToAddDetails,
   reportCompletedResponse,
   misunderstoodReply,
-  requestToShareLocation
+  requestToShareLocation,
+  requestToSharePhoto
 }
