@@ -71,7 +71,7 @@ const requestToSharePhoto = {
         {
           type: 'web_url',
           url: 'https://utility-bot-test.herokuapp.com/capture',
-          title: 'URL Button',
+          title: 'share photo',
           webview_height_ratio: 'tall'
         }
       ]

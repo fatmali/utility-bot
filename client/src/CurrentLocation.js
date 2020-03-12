@@ -137,7 +137,7 @@ export class CurrentLocation extends React.Component {
 
     try{
     // TODO: get the string location of the lat and lng and save to the database
-    await fetch('http://localhost:5000/location', {
+    await fetch('/location', {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         // mode: 'cors', // no-cors, *cors, same-origin
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
