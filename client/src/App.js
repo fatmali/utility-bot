@@ -9,7 +9,7 @@ export class App extends Component {
     return(
       <Router>
       <Route exact path="/" component={Home}  />
-      <Route exact path="/location" component={MapContainer} />
+      <Route exact path="/location/:senderID" component={MapContainer} />
       <Route exact path="/capture" component={Capture} />
     </Router>
     )
