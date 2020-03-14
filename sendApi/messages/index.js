@@ -43,25 +43,22 @@ const addDetailsQuickReply = {
   ]
 }
 
-const requestToShareLocation = (senderID) => {
-  return ({
-    attachment: {
-      type: 'template',
-      payload: {
-        template_type: 'button',
-        text: 'Please share the location of this incident to help our support team locate and resolve it.',
-        buttons: [
-          {
-            type: 'web_url',
-            url: `https://utility-bot-test.herokuapp.com/location/${senderID}`,
-            title: 'Share',
-            webview_height_ratio: 'tall'
-          }
-        ]
-      }
+const requestToShareLocation = {
+  attachment: {
+    type: 'template',
+    payload: {
+      template_type: 'button',
+      text: 'Please share the location of this incident to help our support team locate and resolve it.',
+      buttons: [
+        {
+          type: 'web_url',
+          url: `https://utility-bot-test.herokuapp.com/location/${senderID}`,
+          title: 'Share',
+          webview_height_ratio: 'tall'
+        }
+      ]
     }
   }
-  )
 }
 
 const requestToSharePhoto = {
