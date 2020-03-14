@@ -55,7 +55,7 @@ function handlePostback (sender, postback) {
 
 async function saveImage (imageUrl, senderID) {
   try {
-    await pgClient.query(`UPDATE reports set photos = ${imageUrl} WHERE user_id = ${senderID}`)
+    await pgClient.query(`UPDATE reports SET Photos = ${imageUrl} WHERE User_id = ${senderID}`)
   } catch (error) {
     console.log(error)
   }
@@ -63,7 +63,7 @@ async function saveImage (imageUrl, senderID) {
 
 async function saveUser (senderID) {
   try {
-    await pgClient.query('INSERT INTO reports (user_id) VALUES ($1);', [senderID])
+    await pgClient.query('INSERT INTO reports (User_id) VALUES ($1);', [senderID])
   } catch (error) {
     console.log(error)
   }
