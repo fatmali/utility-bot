@@ -89,19 +89,19 @@ app.get('/webhook', (req, res) => {
 
 app.post('/location', async function (req, res) {
   const { location, senderID } = req.body
-  console.log('result', location, senderID)
   let result
   try {
     result = await pgClient.query(`UPDATE reports SET Location = '${location}' WHERE User_id = '${senderID}'`)
   } catch (error) {
     console.log(error)
   }
-  if (result && result.rowCount === 1) {
+
+  console.log('result', result)
+  try {
     await callSendAPI(senderID, locationReceived)
-    try {
-    } catch (error) {
-      console.log(error)
-    }
+  } catch (error) {
+    console.log(error)
   }
+
   res.json({ result })
 })
