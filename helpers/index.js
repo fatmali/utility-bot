@@ -67,7 +67,7 @@ async function fetchFollowUpReports (senderID) {
       .then((res) => {
         const reports = res.rows.map((report, i) => ({
           title: `Report ${i + 1}`,
-          subtitle: `At ${report.location} on ${formateDate(report.create_at)}. Status: Pending`,
+          subtitle: `At ${report.location} on ${formateDate(report.created_at)}. Status: Pending`,
           image_url: `${report.photos}`
         }))
         callSendAPI(senderID, reportCarousel(reports))
