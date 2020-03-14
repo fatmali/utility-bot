@@ -87,7 +87,7 @@ app.get('/webhook', (req, res) => {
   }
 })
 
-app.patch('/location', async function (req, res) {
+app.post('/location', async function (req, res) {
   const { location, senderID } = req.body
   console.log('result', location, senderID)
   let result
