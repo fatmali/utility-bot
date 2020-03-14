@@ -27,11 +27,13 @@ async function callSendAPI (sender_psid, response) {
   })
 }
 
-function handlePostback (sender, postback) {
+async function handlePostback (sender, postback) {
   try {
     switch (postback.payload) {
       case constants.GET_STARTED:
         callSendAPI(sender.id, welcomeMessage)
+        console.log('condition is met')
+        await saveUser(sender.id)
         break
       case constants.REPORT:
         callSendAPI(sender.id, sharePhoto)
@@ -74,10 +76,7 @@ async function saveUser (senderID) {
 
 async function handleMessage (sender, message) {
   try {
-    if (message.text === constants.GET_STARTED) {
-      console.log('condition is met')
-      await saveUser(sender.id)
-    } else if (message.attachments && message.attachments[0].type === 'image' &&
+    if (message.attachments && message.attachments[0].type === 'image' &&
     message.attachments[0].payload.url) {
       await saveImage(message.attachments[0].payload.url, sender.id)
       callSendAPI(sender.id, photoReceived)
