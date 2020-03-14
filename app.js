@@ -87,11 +87,12 @@ app.get('/webhook', (req, res) => {
   }
 })
 
-app.post('/location', async function (req, res) {
+app.patch('/location', async function (req, res) {
   const { location, senderID } = req.body
   console.log('result', location, senderID)
+  let result
   try {
-    await pgClient.query(`UPDATE reports SET Location = '${location}' WHERE User_id = '${senderID}'`)
+    result = await pgClient.query(`UPDATE reports SET Location = '${location}' WHERE User_id = '${senderID}'`)
   } catch (error) {
     console.log(error)
   }

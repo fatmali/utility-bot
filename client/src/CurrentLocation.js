@@ -130,7 +130,10 @@ export class CurrentLocation extends React.Component {
     await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.REACT_APP_GEOCODE_API_KEY}`)
      .then((result) => result.json())
      .then(data => {
-      physicalAddress = data.plus_code.compound_code
+       let address = data.results.find(result => result.formatted_address)
+       if(address) {
+         physicalAddress = address.formatted_address || 'unknown address'
+       }
      })   
 
     } catch (error){
@@ -149,7 +152,7 @@ export class CurrentLocation extends React.Component {
       } catch (error){
         console.log(error)
       }
-    window.location.replace('https://www.messenger.com/closeWindow/?image_url=https://ibb.co/Fn1pgdp&display_text="location shared"')
+    // window.location.replace('https://www.messenger.com/closeWindow/?image_url=https://ibb.co/Fn1pgdp&display_text="location shared"')
   }
 
   render() {
