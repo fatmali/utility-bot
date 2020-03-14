@@ -1,7 +1,17 @@
 
 const request = require('./request')
 const constants = require('../constants')
-const { welcomeMessage, requestToShareLocation, sharePhoto, photoReceived, addDetailsQuickReply, requestToAddDetails, misunderstoodReply, reportCompletedResponse } = require('../sendApi/messages')
+const {
+  welcomeMessage,
+  requestToShareLocation,
+  sharePhoto,
+  photoReceived,
+  followUp,
+  requestToAddDetails,
+  misunderstoodReply,
+  reportCompletedResponse,
+  reportCarousel
+} = require('../sendApi/messages')
 const { pgClient } = require('./queries')
 
 async function callSendAPI (sender_psid, response) {
@@ -27,32 +37,6 @@ async function callSendAPI (sender_psid, response) {
   })
 }
 
-async function handlePostback (sender, postback) {
-  try {
-    switch (postback.payload) {
-      case constants.GET_STARTED:
-        await saveUser(sender.id)
-        break
-      case constants.REPORT:
-        callSendAPI(sender.id, sharePhoto)
-        break
-      case constants.ADD_DETAILS.YES:
-        callSendAPI(sender.id, requestToAddDetails)
-        break
-      case constants.ADD_DETAILS_NO:
-        callSendAPI(sender.id, reportCompletedResponse)
-        break
-      case constants.FOLLOW_UP:
-        // search and find ticket id, display progress details of ticket
-        break
-      default:
-        console.log('Unsupported request: Request can either be REPORT or FOLLOW_UP')
-    }
-  } catch (error) {
-    console.error(error)
-  }
-}
-
 async function saveImage (imageUrl, senderID) {
   try {
     await pgClient.query(`UPDATE reports SET Photos = '${imageUrl}' WHERE User_id = '${senderID}'`)
@@ -69,6 +53,44 @@ async function saveUser (senderID) {
       })
   } catch (error) {
     console.log(error)
+  }
+}
+
+async function fetchFollowUpReports (senderID) {
+  try {
+    await pgClient.query(`SELECT * FROM reports WHERE user_id = '${senderID}'`)
+      .then((res) => {
+        callSendAPI(senderID, welcomeMessage)
+      })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function handlePostback (sender, postback) {
+  try {
+    switch (postback.payload) {
+      case constants.GET_STARTED:
+        await saveUser(sender.id)
+        break
+      case constants.REPORT:
+        callSendAPI(sender.id, sharePhoto)
+        break
+      case constants.FOLLOW_UP:
+        callSendAPI(sender.id, followUp)
+        callSendAPI(sender.id, reportCarousel)
+        break
+      case constants.ADD_DETAILS.YES:
+        callSendAPI(sender.id, requestToAddDetails)
+        break
+      case constants.ADD_DETAILS_NO:
+        callSendAPI(sender.id, reportCompletedResponse)
+        break
+      default:
+        console.log('Unsupported request: Request can either be REPORT or FOLLOW_UP')
+    }
+  } catch (error) {
+    console.error(error)
   }
 }
 

@@ -96,9 +96,21 @@ app.post('/location', async function (req, res) {
     console.log(error)
   }
 
-  console.log('result', result)
   try {
     await callSendAPI(senderID, locationReceived)
+  } catch (error) {
+    console.log(error)
+  }
+
+  res.json({ result })
+})
+
+app.post('/follow', async function (req, res) {
+  const { senderID } = req.body
+  let result
+  try {
+    result = await pgClient.query(`SELECT * FROM reports WHERE user_id = '${senderID}'`)
+    console.log('result', result.rows)
   } catch (error) {
     console.log(error)
   }

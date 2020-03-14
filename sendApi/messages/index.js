@@ -95,6 +95,26 @@ const locationReceived = {
   text: 'Thanks! Now we know where the problem is. We will inform you once this issue is resolved.'
 }
 
+const followUp = {
+  text: 'Here is a list of your reports. :)'
+}
+
+const reportCarousel = {
+  attachment: {
+    type: 'template',
+    payload: {
+      template_type: 'generic',
+      elements: [
+        {
+          title: 'Welcome!',
+          image_url: 'https://petersfancybrownhats.com/company_image.png',
+          subtitle: 'We have the right hat for everyone.'
+        }
+      ]
+    }
+  }
+}
+
 module.exports = {
   welcomeMessage,
   sharePhoto,
@@ -105,5 +125,7 @@ module.exports = {
   misunderstoodReply,
   requestToShareLocation,
   requestToSharePhoto,
-  locationReceived
+  locationReceived,
+  followUp,
+  reportCarousel
 }
