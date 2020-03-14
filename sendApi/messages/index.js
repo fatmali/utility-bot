@@ -99,21 +99,15 @@ const followUp = {
   text: 'Here is a list of your reports. :)'
 }
 
-const reportCarousel = {
+const reportCarousel = (reports) => ({
   attachment: {
     type: 'template',
     payload: {
       template_type: 'generic',
-      elements: [
-        {
-          title: 'Welcome!',
-          image_url: 'https://petersfancybrownhats.com/company_image.png',
-          subtitle: 'We have the right hat for everyone.'
-        }
-      ]
+      elements: reports
     }
   }
-}
+})
 
 module.exports = {
   welcomeMessage,

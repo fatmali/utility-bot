@@ -1,5 +1,6 @@
 
 const request = require('./request')
+const { format } = require('date-fns')
 const constants = require('../constants')
 const {
   welcomeMessage,
@@ -56,11 +57,20 @@ async function saveUser (senderID) {
   }
 }
 
+function formateDate (isoDate) {
+  return format(new Date(isoDate), 'dd/MM/yyyy')
+}
+
 async function fetchFollowUpReports (senderID) {
   try {
     await pgClient.query(`SELECT * FROM reports WHERE user_id = '${senderID}'`)
       .then((res) => {
-        callSendAPI(senderID, welcomeMessage)
+        const reports = res.rows.map((report, i) => ({
+          title: `Report ${i + 1}`,
+          subtitle: `At ${report.location} on ${formateDate(report.create_at)}. Status: Pending`,
+          image_url: `${report.photos}`
+        }))
+        callSendAPI(senderID, reportCarousel(reports))
       })
   } catch (error) {
     console.log(error)
@@ -78,7 +88,7 @@ async function handlePostback (sender, postback) {
         break
       case constants.FOLLOW_UP:
         callSendAPI(sender.id, followUp)
-        callSendAPI(sender.id, reportCarousel)
+        fetchFollowUpReports(sender.id)
         break
       case constants.ADD_DETAILS.YES:
         callSendAPI(sender.id, requestToAddDetails)

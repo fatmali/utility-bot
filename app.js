@@ -1,4 +1,3 @@
-'use strict'
 const botSetup = require('./sendApi/setup')
 const express = require('express')
 const path = require('path')
@@ -105,15 +104,15 @@ app.post('/location', async function (req, res) {
   res.json({ result })
 })
 
-app.post('/follow', async function (req, res) {
-  const { senderID } = req.body
-  let result
-  try {
-    result = await pgClient.query(`SELECT * FROM reports WHERE user_id = '${senderID}'`)
-    console.log('result', result.rows)
-  } catch (error) {
-    console.log(error)
-  }
-
-  res.json({ result })
-})
+// app.post('/follow', async function (req, res) {
+// const { senderID } = req.body
+// let result
+// try {
+//   result = await pgClient.query(`SELECT * FROM reports WHERE user_id = '${senderID}'`)
+//   console.log('result', result.rows)
+// } catch (error) {
+//   console.log(error)
+// }
+//   console.log('date', date)
+//   res.json({ result: date })
+// })
