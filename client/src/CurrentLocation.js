@@ -15,17 +15,17 @@ const mapStyles = {
     height: 60,
     width: '100%',
     backgroundColor: '#0084ff',
+    textDecoration:'none',
     position: 'absolute', 
     bottom: 15,
     color: '#FFF',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10
-  },
-  buttonText: {
+    borderRadius: 10,
     margin: 0,
+    fontSize: 20,
     fontWeight: 'bold'
-  }
+  },
 };
 
 export class CurrentLocation extends React.Component {
@@ -56,7 +56,7 @@ export class CurrentLocation extends React.Component {
         });
       }
     }
-    this.loadMap();
+    // this.loadMap();
   }
 
   async componentDidUpdate(prevProps, prevState) {
@@ -149,8 +149,7 @@ export class CurrentLocation extends React.Component {
       } catch (error){
         console.log(error)
       }
-      // TODO: add icon to tell user location is received
-    window.location.replace('https://www.messenger.com/closeWindow/?image_url=https://i.picsum.photos/id/1068/200/300.jpg&display_text="location shared"')
+    window.location.replace('https://www.messenger.com/closeWindow/?image_url=https://ibb.co/Fn1pgdp&display_text="location shared"')
   }
 
   render() {
@@ -160,8 +159,8 @@ export class CurrentLocation extends React.Component {
          Loading map...
        </div>
        {this.renderChildren()}
-       <div style={mapStyles.button}>
-         <button onClick={this.handleClick} style={mapStyles.buttonText}>Share</button>
+       <div>
+         <button onClick={this.handleClick} style={mapStyles.button}>Share</button>
        </div>
      </div>
    );

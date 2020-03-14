@@ -45,7 +45,7 @@ onClose = props => {
     );
   }
 }
-// TODO: this variable might not be accessed by heroku hence the 'developer only' appearance of the map in production 
+
 export default GoogleApiWrapper({
   apiKey: process.env.REACT_APP_API_KEY
 })(MapContainer);
