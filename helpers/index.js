@@ -55,7 +55,7 @@ function handlePostback (sender, postback) {
 
 async function saveImage (imageUrl, senderID) {
   try {
-    await pgClient.query(`UPDATE reports SET Photos = '${imageUrl}' WHERE User_id = ${senderID}`)
+    await pgClient.query(`UPDATE reports SET Photos = '${imageUrl}' WHERE User_id = '${senderID}'`)
   } catch (error) {
     console.log(error)
   }
