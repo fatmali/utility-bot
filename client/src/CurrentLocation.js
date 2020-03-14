@@ -56,7 +56,7 @@ export class CurrentLocation extends React.Component {
         });
       }
     }
-    // this.loadMap();
+    this.loadMap();
   }
 
   async componentDidUpdate(prevProps, prevState) {
