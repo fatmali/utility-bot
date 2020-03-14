@@ -41,7 +41,6 @@ app.get('/run-setup', (req, res) => {
 })
 
 app.post('/webhook', (req, res) => {
-  console.log('webhook req body', req.body)
   if (req.body.object === 'page') {
     req.body.entry.forEach(function (entry) {
       // Get the webhook event. entry.messaging is an array, but
@@ -87,13 +86,12 @@ app.get('/webhook', (req, res) => {
     }
   }
 })
-// TODO: add user's id to as a req.body and change this to patch route so that only one user's
-// information is updated
+
 app.post('/location', async function (req, res) {
   let result
   const { location, senderID } = req.body
   try {
-    result = await pgClient.query('INSERT INTO reports (location) VALUES ($1);', [location])
+    result = await pgClient.query(`UPDATE reports set location = ${location} WHERE user_id = ${senderID}`)
   } catch (error) {
     console.log(error)
   }
@@ -103,18 +101,6 @@ app.post('/location', async function (req, res) {
     } catch (error) {
       console.log(error)
     }
-  }
-  res.json({ result })
-})
-// TODO: add user's id to as a req.body and change this to patch route so that only one user's
-// information is updated
-app.post('/capture', async function (req, res) {
-  let result
-  const { photo } = req.body
-  try {
-    result = await pgClient.query('INSERT INTO reports (photos) VALUES ($1);', [photo])
-  } catch (error) {
-    console.log(error)
   }
   res.json({ result })
 })

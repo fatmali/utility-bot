@@ -66,7 +66,7 @@ const requestToSharePhoto = {
     type: 'template',
     payload: {
       template_type: 'button',
-      text: 'Please take a photo of the leakage',
+      text: 'Please take a photo of the incident',
       buttons: [
         {
           type: 'web_url',
@@ -92,7 +92,7 @@ const misunderstoodReply = {
 }
 
 const locationReceived = {
-  text: 'Good job! Now we know where the problem is.'
+  text: 'Thanks! Now we know where the problem is. We will inform you once this issue is resolved.'
 }
 
 module.exports = {

@@ -53,9 +53,17 @@ function handlePostback (sender, postback) {
   }
 }
 
-async function saveImage (imageUrl) {
+async function saveImage (imageUrl, senderID) {
   try {
-    await pgClient.query('INSERT INTO reports (photos) VALUES ($1);', [imageUrl])
+    await pgClient.query(`UPDATE reports set photos = ${imageUrl} WHERE user_id = ${senderID}`)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function saveUser (senderID) {
+  try {
+    await pgClient.query('INSERT INTO reports (user_id) VALUES ($1);', [senderID])
   } catch (error) {
     console.log(error)
   }
@@ -65,9 +73,10 @@ async function handleMessage (sender, message) {
   try {
     if (message.text === constants.GET_STARTED) {
       callSendAPI(sender.id, welcomeMessage)
+      await saveUser(sender.id)
     } else if (message.attachments && message.attachments[0].type === 'image' &&
     message.attachments[0].payload.url) {
-      await saveImage(message.attachments[0].payload.url)
+      await saveImage(message.attachments[0].payload.url, sender.id)
       callSendAPI(sender.id, photoReceived)
       callSendAPI(sender.id, requestToShareLocation(sender.id))
     } else if (message.quick_reply) {
