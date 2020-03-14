@@ -69,7 +69,7 @@ async function handleMessage (sender, message) {
     message.attachments[0].payload.url) {
       await saveImage(message.attachments[0].payload.url)
       callSendAPI(sender.id, photoReceived)
-      callSendAPI(sender.id, requestToShareLocation)
+      callSendAPI(sender.id, requestToShareLocation(sender.id))
     } else if (message.quick_reply) {
       switch (message.quick_reply.payload) {
         case constants.ADD_DETAILS_YES:

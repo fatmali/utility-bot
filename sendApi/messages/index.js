@@ -43,7 +43,7 @@ const addDetailsQuickReply = {
   ]
 }
 
-const requestToShareLocation = {
+const requestToShareLocation = (senderID) => ({
   attachment: {
     type: 'template',
     payload: {
@@ -52,14 +52,14 @@ const requestToShareLocation = {
       buttons: [
         {
           type: 'web_url',
-          url: 'https://utility-bot-test.herokuapp.com/location',
+          url: `https://utility-bot-test.herokuapp.com/location${senderID}`,
           title: 'Share',
           webview_height_ratio: 'tall'
         }
       ]
     }
   }
-}
+})
 
 const requestToSharePhoto = {
   attachment: {

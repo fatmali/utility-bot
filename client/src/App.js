@@ -10,7 +10,6 @@ export class App extends Component {
       <Router>
       <Route exact path="/" component={Home}  />
       <Route exact path="/location" component={MapContainer} />
-      <Route exact path="/location/:senderID" component={MapContainer} />
       <Route exact path="/capture" component={Capture} />
     </Router>
     )
