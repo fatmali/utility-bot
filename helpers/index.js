@@ -37,6 +37,7 @@ function handlePostback (sender, postback) {
         callSendAPI(sender.id, sharePhoto)
         break
       case constants.ADD_DETAILS.YES:
+        console.log('requestToAddDetails', requestToAddDetails(sender.id))
         callSendAPI(sender.id, requestToAddDetails(sender.id))
         break
       case constants.ADD_DETAILS_NO:
