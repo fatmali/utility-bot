@@ -70,6 +70,7 @@ async function fetchFollowUpReports (senderID) {
           subtitle: `At ${report.location} on ${formateDate(report.created_at)}. Status: Pending`,
           image_url: `${report.photos}`
         }))
+        console.log('report', reports)
         callSendAPI(senderID, reportCarousel(reports))
       })
   } catch (error) {
