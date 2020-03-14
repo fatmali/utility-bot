@@ -30,6 +30,7 @@ onClose = props => {
     return (
       <CurrentLocation
       centerAroundCurrentLocation
+      senderID={this.props.match.params.senderID}
       google={this.props.google}>
       <Marker onClick={this.onMarkerClick} name={'current location'} />
       <InfoWindow

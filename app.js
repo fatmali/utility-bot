@@ -91,15 +91,14 @@ app.get('/webhook', (req, res) => {
 // information is updated
 app.post('/location', async function (req, res) {
   let result
-  const { location } = req.body
+  const { location, senderID } = req.body
   try {
     result = await pgClient.query('INSERT INTO reports (location) VALUES ($1);', [location])
   } catch (error) {
     console.log(error)
   }
   if (result && result.rowCount === 1) {
-    console.log('here')
-    await callSendAPI('1', locationReceived)
+    await callSendAPI(senderID, locationReceived)
     try {
     } catch (error) {
       console.log(error)
