@@ -91,6 +91,10 @@ const misunderstoodReply = {
   text: 'Sorry, I did not get that. Please check our main menu and try again.'
 }
 
+const locationReceived = {
+  text: 'Good job! Now we know where the problem is.'
+}
+
 module.exports = {
   welcomeMessage,
   sharePhoto,
@@ -100,5 +104,6 @@ module.exports = {
   reportCompletedResponse,
   misunderstoodReply,
   requestToShareLocation,
-  requestToSharePhoto
+  requestToSharePhoto,
+  locationReceived
 }

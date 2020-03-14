@@ -6,6 +6,8 @@ const body_parser = require('body-parser')
 const app = express().use(body_parser.json()) // creates express http server
 const { handlePostback, handleMessage } = require('./helpers')
 const { pgClient } = require('./helpers/queries')
+const { callSendAPI } = require('./helpers')
+const { locationReceived } = require('./sendApi/messages')
 
 pgClient.connect()
 
@@ -94,7 +96,13 @@ app.post('/location', async function (req, res) {
   } catch (error) {
     console.log(error)
   }
-  console.log('location route result', result)
+  if (result && result.rowCount === 1) {
+    try {
+      await callSendAPI(locationReceived)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   res.json({ result })
 })
 // TODO: add user's id to as a req.body and change this to patch route so that only one user's

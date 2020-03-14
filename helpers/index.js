@@ -91,5 +91,6 @@ async function handleMessage (sender, message) {
 
 module.exports = {
   handlePostback,
-  handleMessage
+  handleMessage,
+  callSendAPI
 }
