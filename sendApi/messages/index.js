@@ -104,7 +104,13 @@ const reportCarousel = (reports) => ({
     type: 'template',
     payload: {
       template_type: 'generic',
-      elements: reports
+      elements: [
+        {
+          title: 'Report 4',
+          subtitle: 's',
+          image_url: 'null'
+        }
+      ]
     }
   }
 })
