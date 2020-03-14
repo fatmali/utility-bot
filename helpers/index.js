@@ -62,11 +62,9 @@ async function saveImage (imageUrl, senderID) {
 }
 
 async function saveUser (senderID) {
-  console.log('save user', senderID)
   try {
     await pgClient.query('INSERT INTO reports (photos) VALUES ($1);', [senderID])
       .then((res) => {
-        console.log('res', res)
         callSendAPI(senderID, welcomeMessage)
       })
   } catch (error) {
