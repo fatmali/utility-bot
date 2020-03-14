@@ -52,7 +52,7 @@ const requestToShareLocation = {
       buttons: [
         {
           type: 'web_url',
-          url: `https://utility-bot-test.herokuapp.com/location/${senderID}`,
+          url: 'https://utility-bot-test.herokuapp.com/location',
           title: 'Share',
           webview_height_ratio: 'tall'
         }
