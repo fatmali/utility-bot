@@ -94,6 +94,7 @@ app.post('/location', async function (req, res) {
   } catch (error) {
     console.log(error)
   }
+  console.log('location route result', result)
   res.json({ result })
 })
 // TODO: add user's id to as a req.body and change this to patch route so that only one user's
