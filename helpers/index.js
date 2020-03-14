@@ -75,6 +75,7 @@ async function saveUser (senderID) {
 async function handleMessage (sender, message) {
   try {
     if (message.text === constants.GET_STARTED) {
+      console.log('condition is met')
       await saveUser(sender.id)
     } else if (message.attachments && message.attachments[0].type === 'image' &&
     message.attachments[0].payload.url) {
