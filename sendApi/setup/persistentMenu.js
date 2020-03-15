@@ -22,9 +22,9 @@ const menu = {
   ]
 }
 
-module.exports = function setUpPersistentMenu () {
-  request({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
+module.exports = function setUpPersistentMenu() {
+  return request({
+    url: "https://graph.facebook.com/v2.6/me/messages",
     qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
     method: 'POST',
     json: menu
