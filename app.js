@@ -23,13 +23,13 @@ app.listen(process.env.PORT || 5000, () => console.log('webhook is listening'))
 
 app.use(express.static(path.join(__dirname, 'client/build')))
 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + '/client/build/index.html'))
 })
 
-app.get('/', (req, res) => {
-  res.send("Hello World! I'm Up!")
-})
+// app.get('/', (req, res) => {
+//   res.send("Hello World! I'm Up!")
+// })
 
 app.get('/run-setup', (req, res) => {
   botSetup()
