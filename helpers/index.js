@@ -66,7 +66,7 @@ function formateDate (isoDate) {
 async function fetchFollowUpReports (senderID) {
   const reports = []
   try {
-    await pgClient.query(`SELECT * FROM reports WHERE user_id = '${senderID}' AND photos IS NULL;`)
+    await pgClient.query(`SELECT * FROM reports WHERE user_id = '${senderID}' AND photos IS NOT NULL;`)
       .then((res) => {
         if (res.rows.length === 0) {
           return callSendAPI(senderID, noReports)
