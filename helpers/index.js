@@ -101,12 +101,6 @@ async function handlePostback (sender, postback) {
         callSendAPI(sender.id, followUp)
         fetchFollowUpReports(sender.id)
         break
-      case constants.MAKE_REPORT_YES:
-        callSendAPI(sender.id, sharePhoto)
-        break
-      case constants.MAKE_REPORT_NO:
-        callSendAPI(sender.id, makeBackLater)
-        break
       case constants.ADD_DETAILS.YES:
         callSendAPI(sender.id, requestToAddDetails)
         break
@@ -130,6 +124,12 @@ async function handleMessage (sender, message) {
       callSendAPI(sender.id, requestToShareLocation(sender.id))
     } else if (message.quick_reply) {
       switch (message.quick_reply.payload) {
+        case constants.MAKE_REPORT_YES:
+          callSendAPI(sender.id, sharePhoto)
+          break
+        case constants.MAKE_REPORT_NO:
+          callSendAPI(sender.id, makeBackLater)
+          break
         case constants.ADD_DETAILS_YES:
           callSendAPI(sender.id, requestToAddDetails)
           break
