@@ -73,7 +73,7 @@ async function fetchFollowUpReports (senderID) {
         } else {
           // TODO: find a way to display mutiple reports
           // At the moment we are updating every row that has a photo and location
-          // const firstReport = res.rows[0]
+          const firstReport = res.rows[0]
           reports.push({
             title: 'Report 1',
             subtitle: `At ${firstReport.location} on ${formateDate(firstReport.created_at)}. Status: Pending`,
