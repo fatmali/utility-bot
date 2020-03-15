@@ -109,6 +109,25 @@ const reportCarousel = (reports) => ({
   }
 })
 
+const noReports = {
+  text: 'Sorry, you have not made a report yet. Would you like to make one?',
+  quick_replies: [
+    {
+      content_type: 'text',
+      title: 'Yes',
+      payload: 'MAKE_REPORT_YES'
+    }, {
+      content_type: 'text',
+      title: 'No',
+      payload: 'MAKE_REPORT_NO'
+    }
+  ]
+}
+
+const makeBackLater = {
+  text: 'No problem. Come back later when you want to report an issue :)'
+}
+
 module.exports = {
   welcomeMessage,
   sharePhoto,
@@ -121,5 +140,7 @@ module.exports = {
   requestToSharePhoto,
   locationReceived,
   followUp,
-  reportCarousel
+  reportCarousel,
+  noReports,
+  makeBackLater
 }

@@ -11,13 +11,14 @@ const {
   requestToAddDetails,
   misunderstoodReply,
   reportCompletedResponse,
-  reportCarousel
+  reportCarousel,
+  noReports,
+  makeBackLater
 } = require('../sendApi/messages')
 const { pgClient } = require('./queries')
 
 async function callSendAPI (sender_psid, response) {
   // Construct the message body
-  console.log('call send api', response)
   const request_body = {
     recipient: {
       id: sender_psid
@@ -67,6 +68,10 @@ async function fetchFollowUpReports (senderID) {
   try {
     await pgClient.query(`SELECT * FROM reports WHERE user_id = '${senderID}' AND photos IS NOT NULL;`)
       .then((res) => {
+        console.log('res', res)
+        if (res.rows.length === 0) {
+          return callSendAPI(senderID, noReports)
+        }
         reports = res.rows.map((report, i) => ({
           title: `Report ${i + 1}`,
           subtitle: `At ${report.location} on ${formateDate(report.created_at)}. Status: Pending`,
@@ -96,6 +101,12 @@ async function handlePostback (sender, postback) {
       case constants.FOLLOW_UP:
         callSendAPI(sender.id, followUp)
         fetchFollowUpReports(sender.id)
+        break
+      case constants.MAKE_REPORT_YES:
+        callSendAPI(sender.id, sharePhoto)
+        break
+      case constants.MAKE_REPORT_NO:
+        callSendAPI(sender.id, makeBackLater)
         break
       case constants.ADD_DETAILS.YES:
         callSendAPI(sender.id, requestToAddDetails)
