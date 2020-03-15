@@ -73,6 +73,7 @@ async function fetchFollowUpReports (senderID) {
         }
 
         for (let i = 0; i < res.rows.length; i++) {
+          console.log('res', res.rows[i], i)
           reports.push({
             title: `Report ${i + 1}`,
             subtitle: `At ${res.rows[i].location} on ${formateDate(res.rows[i].created_at)}. Status: Pending`,
@@ -81,7 +82,6 @@ async function fetchFollowUpReports (senderID) {
         }
       })
 
-    console.log('reports', reports)
     callSendAPI(senderID, reportCarousel(reports))
   } catch (error) {
     console.log(error)
