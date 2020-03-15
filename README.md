@@ -22,7 +22,7 @@ We started with mockups on botsociety just to get a clear picture of how the app
 Because Wilfred and I are both JavaScript geeks, we built out a simple server using [Express](https://expressjs.com/) and hosted it on [Heroku](https://www.heroku.com/). The server listens on the `/webhook` endpoint for both postback and messages for two types of events:
 1. **Reporting**: These have a string REPORT in the postback/message. They have a workflow as described by the image below:
 
-![Flowchart](https://drive.google.com/file/d/1FEMNaESjO_FPsEQVU06TFDMLXqBh44QA/view?usp=sharing)
+![Flowchart](https://github.com/fatmali/utility-bot/blob/master/7d2f3e5b4903010259b2utility_bot_e37d339a6e6a036c12d-1.png)
 
 Once a user interacts with the bot, we create the user to using his sender id to a Postgres database if he doesn't exist. We then create a report along with the photo URL and location and save it in the database as well.
 
