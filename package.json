@@ -4,7 +4,11 @@
   "description": "An example webhook for Facebook Messenger quick start tutorial.",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "client": "cd client && npm run start",
+    "start": "node app.js",
+    "server": "nodemon app.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "repository": {
     "type": "git",
@@ -14,8 +18,12 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "concurrently": "^5.1.0",
+    "date-fns": "^2.11.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "nodemon": "^2.0.2",
+    "pg": "^7.18.2",
     "request": "^2.88.2"
   },
   "devDependencies": {

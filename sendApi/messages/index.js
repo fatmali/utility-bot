@@ -25,7 +25,7 @@ const sharePhoto = {
 }
 
 const photoReceived = {
-  text: 'Thank you and could you share the location of this incident?'
+  text: 'Thank you. got it!'
 }
 
 const addDetailsQuickReply = {
@@ -43,16 +43,89 @@ const addDetailsQuickReply = {
   ]
 }
 
+const requestToShareLocation = (senderID) => ({
+  attachment: {
+    type: 'template',
+    payload: {
+      template_type: 'button',
+      text: 'Please share the location of this incident to help our support team locate and resolve it.',
+      buttons: [
+        {
+          type: 'web_url',
+          url: `https://utility-bot-test.herokuapp.com/location/${senderID}`,
+          title: 'Share',
+          webview_height_ratio: 'tall'
+        }
+      ]
+    }
+  }
+})
+
+const requestToSharePhoto = {
+  attachment: {
+    type: 'template',
+    payload: {
+      template_type: 'button',
+      text: 'Please take a photo of the incident',
+      buttons: [
+        {
+          type: 'web_url',
+          url: 'https://utility-bot-test.herokuapp.com',
+          title: 'share photo',
+          webview_height_ratio: 'tall'
+        }
+      ]
+    }
+  }
+}
+
 const requestToAddDetails = {
   text: 'Okay. Please type a message to tell me more.'
 }
 
 const reportCompletedResponse = {
-  text: 'Thank you very much! Our support team will attend to this report and will give you feedback once it has been resolved.s'
+  text: 'Thank you very much! Our support team will attend to this report and will give you feedback once it has been resolved.'
 }
 
 const misunderstoodReply = {
   text: 'Sorry, I did not get that. Please check our main menu and try again.'
+}
+
+const locationReceived = {
+  text: 'Thanks! Now we know where the problem is. We will inform you once this issue is resolved.'
+}
+
+const followUp = {
+  text: 'Here is a list of your reports. :)'
+}
+
+const reportCarousel = (reports) => ({
+  attachment: {
+    type: 'template',
+    payload: {
+      template_type: 'generic',
+      elements: reports
+    }
+  }
+})
+
+const noReports = {
+  text: 'Sorry, you have not made a report yet. Would you like to make one?',
+  quick_replies: [
+    {
+      content_type: 'text',
+      title: 'Yes',
+      payload: 'MAKE_REPORT_YES'
+    }, {
+      content_type: 'text',
+      title: 'No',
+      payload: 'MAKE_REPORT_NO'
+    }
+  ]
+}
+
+const makeBackLater = {
+  text: 'No problem. Come back later when you want to report an issue :)'
 }
 
 module.exports = {
@@ -62,5 +135,12 @@ module.exports = {
   addDetailsQuickReply,
   requestToAddDetails,
   reportCompletedResponse,
-  misunderstoodReply
+  misunderstoodReply,
+  requestToShareLocation,
+  requestToSharePhoto,
+  locationReceived,
+  followUp,
+  reportCarousel,
+  noReports,
+  makeBackLater
 }

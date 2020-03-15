@@ -1,15 +1,35 @@
-'use strict'
 const botSetup = require('./sendApi/setup')
 const express = require('express')
+const path = require('path')
 const body_parser = require('body-parser')
 const app = express().use(body_parser.json()) // creates express http server
 const { handlePostback, handleMessage } = require('./helpers')
+const { pgClient } = require('./helpers/queries')
+const { callSendAPI } = require('./helpers')
+const { locationReceived } = require('./sendApi/messages')
 
-app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'))
+pgClient.connect()
+
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE')
+  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Access-Control-Allow-Origin, Origin, X-Requested-With, X-AUTHENTICATION, X-IP, Content-Type, Accept, Authorization')
+  res.setHeader('Access-Control-Allow-Credentials', 'false')
+  res.setHeader('Cache-Control', 'no-cache')
+  next()
+})
+
+app.listen(process.env.PORT || 5000, () => console.log('webhook is listening'))
+
+app.use(express.static(path.join(__dirname, 'client/build')))
 
 app.get('/', (req, res) => {
-  res.send("Hello World! I'm Up!")
+  res.sendFile(path.join(__dirname + '/client/build/index.html'))
 })
+
+// app.get('/', (req, res) => {
+//   res.send("Hello World! I'm Up!")
+// })
 
 app.get('/run-setup', (req, res) => {
   botSetup()
@@ -25,6 +45,7 @@ app.post('/webhook', (req, res) => {
       // Get the webhook event. entry.messaging is an array, but
       // will only ever contain one event, so we get index 0
       const { sender, postback, message } = entry.messaging[0]
+      console.log('message', message, entry.messaging)
       if (postback) {
         handlePostback(sender, postback)
       } else if (message) {
@@ -64,3 +85,34 @@ app.get('/webhook', (req, res) => {
     }
   }
 })
+
+app.post('/location', async function (req, res) {
+  const { location, senderID } = req.body
+  let result
+  try {
+    result = await pgClient.query(`UPDATE reports SET Location = '${location}' WHERE User_id = '${senderID}'`)
+  } catch (error) {
+    console.log(error)
+  }
+
+  try {
+    await callSendAPI(senderID, locationReceived)
+  } catch (error) {
+    console.log(error)
+  }
+
+  res.json({ result })
+})
+
+// app.post('/follow', async function (req, res) {
+// const { senderID } = req.body
+// let result
+// try {
+//   result = await pgClient.query(`SELECT * FROM reports WHERE user_id = '${senderID}'`)
+//   console.log('result', result.rows)
+// } catch (error) {
+//   console.log(error)
+// }
+//   console.log('date', date)
+//   res.json({ result: date })
+// })
