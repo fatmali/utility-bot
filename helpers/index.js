@@ -66,23 +66,30 @@ function formateDate (isoDate) {
 async function fetchFollowUpReports (senderID) {
   const reports = []
   try {
-    await pgClient.query(`SELECT * FROM reports WHERE user_id = '${senderID}' AND photos IS NOT NULL;`)
+    await pgClient.query(`SELECT * FROM reports WHERE user_id = '${senderID}' AND photos IS NULL;`)
       .then((res) => {
         if (res.rows.length === 0) {
           return callSendAPI(senderID, noReports)
-        }
-
-        for (let i = 0; i < res.rows.length; i++) {
-          console.log('res', res.rows[i], i)
-          reports.push({
-            title: `Report ${i + 1}`,
-            subtitle: `At ${res.rows[i].location} on ${formateDate(res.rows[i].created_at)}. Status: Pending`,
-            image_url: `${res.rows[i].photos}`
-          })
+        } else {
+          // TODO: find a way to display mutiple reports
+          // At the moment we are updating every row that has
+          // const firstReport = res.rows[0]
+          // reports.push({
+          //   title: 'Report 1',
+          //   subtitle: `At ${firstReport.location} on ${formateDate(firstReport.created_at)}. Status: Pending`,
+          //   image_url: `${firstReport.photos}`
+          // })
+          for (let i = 0; i < res.rows.length; i++) {
+            reports.push({
+              title: `Report ${i + 1}`,
+              subtitle: `At ${res.rows[i].location} on ${formateDate(res.rows[i].created_at)}. Status: Pending`,
+              image_url: `${res.rows[i].photos}`
+            })
+          }
+          callSendAPI(sender.id, followUp)
+          callSendAPI(senderID, reportCarousel(reports))
         }
       })
-
-    callSendAPI(senderID, reportCarousel(reports))
   } catch (error) {
     console.log(error)
   }
@@ -98,7 +105,6 @@ async function handlePostback (sender, postback) {
         callSendAPI(sender.id, sharePhoto)
         break
       case constants.FOLLOW_UP:
-        callSendAPI(sender.id, followUp)
         fetchFollowUpReports(sender.id)
         break
       case constants.ADD_DETAILS.YES:

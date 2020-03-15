@@ -90,7 +90,7 @@ app.post('/location', async function (req, res) {
   const { location, senderID } = req.body
   let result
   try {
-    result = await pgClient.query(`UPDATE reports SET Location = '${location}' WHERE User_id = '${senderID}'`)
+    result = await pgClient.query(`UPDATE reports SET Location = '${location}' WHERE User_id = '${senderID} AND Location IS NULL'`)
   } catch (error) {
     console.log(error)
   }
