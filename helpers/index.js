@@ -86,7 +86,7 @@ async function fetchFollowUpReports (senderID) {
               image_url: `${res.rows[i].photos}`
             })
           }
-          callSendAPI(sender.id, followUp)
+          callSendAPI(senderID, followUp)
           callSendAPI(senderID, reportCarousel(reports))
         }
       })
