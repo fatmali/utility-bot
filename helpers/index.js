@@ -65,7 +65,7 @@ function formateDate (isoDate) {
 async function fetchFollowUpReports (senderID) {
   let reports
   try {
-    await pgClient.query(`SELECT * FROM reports WHERE user_id = '${senderID}'`)
+    await pgClient.query(`SELECT * FROM reports WHERE user_id = '${senderID}' AND photos IS NOT NULL;`)
       .then((res) => {
         reports = res.rows.map((report, i) => ({
           title: `Report ${i + 1}`,
