@@ -73,11 +73,10 @@ async function fetchFollowUpReports (senderID) {
         }
 
         for (let i = 0; i < res.rows.length; i++) {
-          const item = res.rows[i]
           reports.push({
             title: `Report ${i + 1}`,
-            subtitle: `At ${item.location} on ${formateDate(item.created_at)}. Status: Pending`,
-            image_url: `${item.photos}`
+            subtitle: `At ${res.rows[i].location} on ${formateDate(res.rows[i].created_at)}. Status: Pending`,
+            image_url: `${res.rows[i].photos}`
           })
         }
       })
