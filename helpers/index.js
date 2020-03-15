@@ -72,20 +72,20 @@ async function fetchFollowUpReports (senderID) {
           return callSendAPI(senderID, noReports)
         } else {
           // TODO: find a way to display mutiple reports
-          // At the moment we are updating every row that has
+          // At the moment we are updating every row that has a photo and location
           // const firstReport = res.rows[0]
-          // reports.push({
-          //   title: 'Report 1',
-          //   subtitle: `At ${firstReport.location} on ${formateDate(firstReport.created_at)}. Status: Pending`,
-          //   image_url: `${firstReport.photos}`
-          // })
-          for (let i = 0; i < res.rows.length; i++) {
-            reports.push({
-              title: `Report ${i + 1}`,
-              subtitle: `At ${res.rows[i].location} on ${formateDate(res.rows[i].created_at)}. Status: Pending`,
-              image_url: `${res.rows[i].photos}`
-            })
-          }
+          reports.push({
+            title: 'Report 1',
+            subtitle: `At ${firstReport.location} on ${formateDate(firstReport.created_at)}. Status: Pending`,
+            image_url: `${firstReport.photos}`
+          })
+          // for (let i = 0; i < res.rows.length; i++) {
+          //   reports.push({
+          //     title: `Report ${i + 1}`,
+          //     subtitle: `At ${res.rows[i].location} on ${formateDate(res.rows[i].created_at)}. Status: Pending`,
+          //     image_url: `${res.rows[i].photos}`
+          //   })
+          // }
           callSendAPI(senderID, followUp)
           callSendAPI(senderID, reportCarousel(reports))
         }
