@@ -64,7 +64,8 @@ function formateDate (isoDate) {
 }
 
 async function fetchFollowUpReports (senderID) {
-  let reports, filteredReports
+  const reports = []
+  let filteredReports
   try {
     await pgClient.query(`SELECT * FROM reports WHERE user_id = '${senderID}' AND photos IS NOT NULL;`)
       .then((res) => {
@@ -72,11 +73,13 @@ async function fetchFollowUpReports (senderID) {
         if (res.rows.length === 0) {
           return callSendAPI(senderID, noReports)
         }
-        reports = res.rows.map((report, i) => ({
-          title: `Report ${i + 1}`,
-          subtitle: `At ${report.location} on ${formateDate(report.created_at)}. Status: Pending`,
-          image_url: `${report.photos}`
-        }))
+        res.rows.map((report, i) => {
+          reports.push({
+            title: `Report ${i + 1}`,
+            subtitle: `At ${report.location} on ${formateDate(report.created_at)}. Status: Pending`,
+            image_url: `${report.photos}`
+          })
+        })
       })
     filteredReports = reports.filter(report => !!report)
     if (filteredReports.length > 10) {
