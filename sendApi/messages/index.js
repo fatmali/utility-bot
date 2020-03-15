@@ -107,8 +107,8 @@ const reportCarousel = (reports) => ({
       elements: [
         {
           title: 'Report 4',
-          subtitle: 's',
-          image_url: 'https://scontent.xx.fbcdn.net/v/t1.15752-9/89744588_206072587281694_5924024799117443072_n.jpg?_nc_cat=103&_nc_sid=b96e70&_nc_ohc=al9QGndb5lgAX_mH-YC&_nc_ad=z-m&_nc_cid=0&_nc_zor=9&_nc_ht=scontent.xx&oh=38715775ca44a551c721e8b3b7a0bdd6&oe=5E94277F'
+          image_url: 'https://scontent.xx.fbcdn.net/v/t1.15752-9/89744588_206072587281694_5924024799117443072_n.jpg?_nc_cat=103&_nc_sid=b96e70&_nc_ohc=al9QGndb5lgAX_mH-YC&_nc_ad=z-m&_nc_cid=0&_nc_zor=9&_nc_ht=scontent.xx&oh=38715775ca44a551c721e8b3b7a0bdd6&oe=5E94277F',
+          subtitle: 's'
         }
       ]
     }

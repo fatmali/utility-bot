@@ -17,6 +17,7 @@ const { pgClient } = require('./queries')
 
 async function callSendAPI (sender_psid, response) {
   // Construct the message body
+  console.log('call send api', response)
   const request_body = {
     recipient: {
       id: sender_psid
@@ -62,17 +63,17 @@ function formateDate (isoDate) {
 }
 
 async function fetchFollowUpReports (senderID) {
+  let reports
   try {
     await pgClient.query(`SELECT * FROM reports WHERE user_id = '${senderID}'`)
       .then((res) => {
-        const reports = res.rows.map((report, i) => ({
+        reports = res.rows.map((report, i) => ({
           title: `Report ${i + 1}`,
           subtitle: `At ${report.location} on ${formateDate(report.created_at)}. Status: Pending`,
           image_url: `${report.photos}`
         }))
-        console.log('report', senderID)
-        callSendAPI(senderID, reportCarousel(reports))
       })
+    callSendAPI(senderID, reportCarousel(reports))
   } catch (error) {
     console.log(error)
   }
